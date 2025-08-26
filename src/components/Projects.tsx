@@ -37,7 +37,7 @@ const projects = [
       "A comprehensive content management system with role-based authentication, user management, and dynamic content creation capabilities.",
     image: cmsImg,
     tech: ["React.js", "Node.js", "MongoDB", "Express.js", "JWT"],
-    githubUrl: "#",
+    githubUrl: "https://github.com/RakeshDevarakonda/CMS-PROJECT",
     category: "Full Stack",
   },
 
@@ -47,7 +47,7 @@ const projects = [
       "Interactive video streaming platform with progress tracking, user analytics, and real-time updates using WebSockets and Redux state management.",
     image: videoImg,
     tech: ["React.js", "Redux", "WebSockets", "Node.js", "MongoDB"],
-    githubUrl: "#",
+    githubUrl: "https://github.com/RakeshDevarakonda/VideoProgressTracker",
     category: "Full Stack",
   },
     {
@@ -56,7 +56,7 @@ const projects = [
       "An e-commerce website built using HTML, CSS, and JavaScript, inspired by online shopping platforms. Features include product listings, individual product pages, a shopping cart, price calculations, checkout, and a simulated payment process.",
     image: ecomerse,
     tech: ["HTML", "CSS", "JavaScript"],
-    githubUrl: "https://github.com/RakeshDevarakonda/ecomerse3",
+    githubUrl: "https://github.com/RakeshDevarakonda/Ecomerse-Website",
     category: "Frontend",
   },
    {
@@ -103,7 +103,7 @@ const projects = [
       "A real-time chat application where users can send and receive messages instantly. Built with Node.js, Express.js,Ejs and Socket.IO  for real-time communication.",
     image: livechatapp,
     tech: ["Node.js", "Express.js", "MongoDB"],
-    githubUrl: "https://github.com/RakeshDevarakonda/Polling-System",
+    githubUrl: "https://github.com/RakeshDevarakonda/Live_Chat_App",
     category: "Backend",
   },
 
