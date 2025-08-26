@@ -1,77 +1,106 @@
-import { motion } from 'framer-motion';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Github, Linkedin, Mail, MapPin, Phone } from 'lucide-react';
-import { useState } from 'react';
-import { useToast } from '@/hooks/use-toast';
+import { motion } from "framer-motion";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Github, Linkedin, Mail, MapPin, Phone } from "lucide-react";
+import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: ''
+    name: "",
+    email: "",
+    message: "",
   });
   const { toast } = useToast();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Google Form action URL (use your form's "formResponse" URL)
+  const GOOGLE_FORM_URL =
+    "https://docs.google.com/forms/d/e/1FAIpQLSfSbKA-V_EyhmoJqh-OJVOhPO1-BSiZPpa2cl59qWAfd1Cb_A/formResponse";
+
+  // Replace with your Google Form entry IDs
+  const ENTRY_NAME = "entry.1335932835";
+  const ENTRY_EMAIL = "entry.1309951506";
+  const ENTRY_MESSAGE = "entry.1218224309";
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate form submission
-    toast({
-      title: "Message Sent!",
-      description: "Thank you for your message. I'll get back to you soon.",
-    });
-    setFormData({ name: '', email: '', message: '' });
+
+    const formBody = new FormData();
+    formBody.append(ENTRY_NAME, formData.name);
+    formBody.append(ENTRY_EMAIL, formData.email);
+    formBody.append(ENTRY_MESSAGE, formData.message);
+
+    try {
+      await fetch(GOOGLE_FORM_URL, {
+        method: "POST",
+        body: formBody,
+        mode: "no-cors", // prevents redirect & CORS errors
+      });
+
+      toast({
+        title: "Message Sent!",
+        description: "Thank you for your message. I'll get back to you soon.",
+      });
+
+      setFormData({ name: "", email: "", message: "" });
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      toast({
+        title: "Error",
+        description: "Something went wrong. Please try again later.",
+      });
+    }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData(prev => ({
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setFormData((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     }));
   };
 
   const contactInfo = [
     {
       icon: Mail,
-      label: 'Email',
-      value: 'rakesh.dev@email.com',
-      href: 'mailto:rakesh.dev@email.com'
+      label: "Email",
+      value: "rakeshdevarakonda2000@gmail.com",
+      href: "mailto:rakesh.dev@email.com",
     },
     {
       icon: Phone,
-      label: 'Phone',
-      value: '+91 98765 43210',
-      href: 'tel:+919876543210'
+      label: "Phone",
+      value: "+91 95151XXXXX",
     },
     {
       icon: MapPin,
-      label: 'Location',
-      value: 'Hyderabad, India',
-      href: '#'
-    }
+      label: "Location",
+      value: "Hyderabad, India",
+    },
   ];
 
   const socialLinks = [
     {
       icon: Github,
-      label: 'GitHub',
-      href: 'https://github.com',
-      color: 'hover:text-primary'
+      label: "GitHub",
+      href: "https://github.com/RakeshDevarakonda/",
+      color: "hover:text-primary",
     },
     {
       icon: Linkedin,
-      label: 'LinkedIn',
-      href: 'https://linkedin.com',
-      color: 'hover:text-primary'
+      label: "LinkedIn",
+      href: "https://www.linkedin.com/in/rakeshdevarakonda",
+      color: "hover:text-primary",
     },
     {
       icon: Mail,
-      label: 'Email',
-      href: 'mailto:rakesh.dev@email.com',
-      color: 'hover:text-secondary'
-    }
+      label: "Email",
+      href: "mailto:rakeshdevarakonda2000@email.com",
+      color: "hover:text-secondary",
+    },
   ];
 
   return (
@@ -85,10 +114,14 @@ const Contact = () => {
           className="text-center mb-16"
         >
           <h2 className="text-4xl lg:text-5xl font-bold mb-4">
-            Get In <span className="bg-gradient-primary bg-clip-text text-transparent">Touch</span>
+            Get In{" "}
+            <span className="bg-gradient-primary bg-clip-text text-transparent">
+              Touch
+            </span>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Have a project in mind or want to collaborate? Let's connect and create something amazing together.
+            Have a project in mind or want to collaborate? Let's connect and
+            create something amazing together.
           </p>
         </motion.div>
 
@@ -104,7 +137,6 @@ const Contact = () => {
               <h3 className="text-2xl font-bold mb-6 text-primary">
                 Send me a message
               </h3>
-              
               <form onSubmit={handleSubmit} className="space-y-6">
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
@@ -112,7 +144,10 @@ const Contact = () => {
                   transition={{ duration: 0.6, delay: 0.1 }}
                   viewport={{ once: true }}
                 >
-                  <label htmlFor="name" className="block text-sm font-medium mb-2 text-foreground">
+                  <label
+                    htmlFor="name"
+                    className="block text-sm font-medium mb-2 text-foreground"
+                  >
                     Your Name
                   </label>
                   <Input
@@ -132,7 +167,10 @@ const Contact = () => {
                   transition={{ duration: 0.6, delay: 0.2 }}
                   viewport={{ once: true }}
                 >
-                  <label htmlFor="email" className="block text-sm font-medium mb-2 text-foreground">
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium mb-2 text-foreground"
+                  >
                     Email Address
                   </label>
                   <Input
@@ -153,7 +191,10 @@ const Contact = () => {
                   transition={{ duration: 0.6, delay: 0.3 }}
                   viewport={{ once: true }}
                 >
-                  <label htmlFor="message" className="block text-sm font-medium mb-2 text-foreground">
+                  <label
+                    htmlFor="message"
+                    className="block text-sm font-medium mb-2 text-foreground"
+                  >
                     Message
                   </label>
                   <Textarea
@@ -174,10 +215,10 @@ const Contact = () => {
                   transition={{ duration: 0.6, delay: 0.4 }}
                   viewport={{ once: true }}
                 >
-                  <Button 
-                    type="submit" 
-                    variant="hero" 
-                    size="lg" 
+                  <Button
+                    type="submit"
+                    variant="hero"
+                    size="lg"
                     className="w-full hover:scale-105"
                   >
                     Send Message
@@ -187,7 +228,7 @@ const Contact = () => {
             </Card>
           </motion.div>
 
-          {/* Contact Information */}
+          {/* Contact Info */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -200,13 +241,12 @@ const Contact = () => {
                 Let's connect
               </h3>
               <p className="text-muted-foreground leading-relaxed mb-8">
-                I'm always interested in new opportunities and collaborations. 
-                Whether you have a project in mind, want to discuss technology, 
+                I'm always interested in new opportunities and collaborations.
+                Whether you have a project in mind, want to discuss technology,
                 or just want to say hello, feel free to reach out!
               </p>
             </div>
 
-            {/* Contact Details */}
             <div className="space-y-4">
               {contactInfo.map((item, index) => (
                 <motion.a
@@ -226,13 +266,14 @@ const Contact = () => {
                     <h4 className="font-medium text-foreground group-hover:text-primary transition-colors">
                       {item.label}
                     </h4>
-                    <p className="text-muted-foreground text-sm">{item.value}</p>
+                    <p className="text-muted-foreground text-sm">
+                      {item.value}
+                    </p>
                   </div>
                 </motion.a>
               ))}
             </div>
 
-            {/* Social Links */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -253,10 +294,10 @@ const Contact = () => {
                     whileInView={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.3, delay: index * 0.1 }}
                     viewport={{ once: true }}
-                    whileHover={{ 
+                    whileHover={{
                       scale: 1.2,
                       y: -2,
-                      transition: { duration: 0.2 }
+                      transition: { duration: 0.2 },
                     }}
                     className={`p-3 rounded-lg bg-card border border-border hover:border-primary transition-all duration-300 hover:shadow-glow-primary ${social.color}`}
                   >
