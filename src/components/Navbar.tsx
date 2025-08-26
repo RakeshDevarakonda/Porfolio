@@ -54,7 +54,8 @@ const Navbar = () => {
           </div>
 
           <a
-            href="https://drive.google.com/file/d/1Dy3lx_Ts2feblhNE9SWO4QN-VpIj6SvW/view?usp=drive_link"
+            href="https://drive.google.com/file/d/1Dy3lx_Ts2feblhNE9SWO4QN-VpIj6SvW/view?usp=sharing"
+            
             
             target="_blank"
             download="Rakesh_Resume.pdf"
