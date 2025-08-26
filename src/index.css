@@ -1,0 +1,103 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+@layer base {
+  :root {
+   
+    --background: 222 30% 5%;
+    --foreground: 210 80% 95%;
+
+    --card: 222 30% 8%;
+    --card-foreground: 210 80% 95%;
+
+    --popover: 222 30% 8%;
+    --popover-foreground: 210 80% 95%;
+
+   
+    --primary: 210 100% 60%;
+    --primary-foreground: 222 30% 5%;
+
+   
+    --secondary: 270 100% 65%;
+    --secondary-foreground: 222 30% 5%;
+
+    --muted: 222 20% 15%;
+    --muted-foreground: 210 20% 65%;
+
+   
+    --accent: 270 100% 65%;
+    --accent-foreground: 222 30% 5%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 80% 95%;
+
+    --border: 222 20% 20%;
+    --input: 222 20% 15%;
+    --ring: 210 100% 60%;
+
+    --radius: 0.75rem;
+
+   
+    --neon-blue: 210 100% 60%;
+    --neon-purple: 270 100% 65%;
+    --neon-cyan: 180 100% 50%;
+    
+   
+    --gradient-primary: linear-gradient(135deg, hsl(210 100% 60%), hsl(270 100% 65%));
+    --gradient-card: linear-gradient(135deg, hsl(222 30% 8%), hsl(222 20% 12%));
+    
+   
+    --glow-primary: 0 0 20px hsl(210 100% 60% / 0.3);
+    --glow-secondary: 0 0 20px hsl(270 100% 65% / 0.3);
+    --glow-hover: 0 10px 40px hsl(210 100% 60% / 0.4);
+    
+   
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+ .swiper-pagination-bullet {
+  background: white !important;
+  opacity: 1;
+}
+ .swiper-pagination-bullet-active {
+  background: rgb(0, 134, 243) !important;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  top: 47%; 
+  transform: translateY(-50%);
+}
+
+
+
+.swiper-pagination-bullet {
+  width: 14px;      
+  height: 14px;     
+}
+
+
+.swiper-pagination-bullet-active {
+  width: 16px;      
+  height: 16px;
+
+}

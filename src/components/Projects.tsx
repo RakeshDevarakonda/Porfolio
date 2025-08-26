@@ -1,0 +1,277 @@
+"use client";
+import { motion } from "framer-motion";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Github } from "lucide-react";
+
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+
+import cmsImg from "../assets/cms.png";
+import videoImg from "../assets/videoprogress.png";
+import jobportal from "../assets/jobportal.png";
+import realtimenotes from "../assets/realtimenotes.png";
+
+import ollama from "../assets/ollama.png";
+import truepulse from "../assets/trupluse.png";
+import ecomerse from "../assets/Ecomerse.png";
+
+import livechatapp from "../assets/livechatapp.png";
+import rentify from "../assets/Rentify.png";
+
+
+
+
+
+
+
+
+
+const projects = [
+  {
+    title: "CMS Platform with Role-Based Access",
+    description:
+      "A comprehensive content management system with role-based authentication, user management, and dynamic content creation capabilities.",
+    image: cmsImg,
+    tech: ["React.js", "Node.js", "MongoDB", "Express.js", "JWT"],
+    githubUrl: "#",
+    category: "Full Stack",
+  },
+
+  {
+    title: "Video Progress Tracker",
+    description:
+      "Interactive video streaming platform with progress tracking, user analytics, and real-time updates using WebSockets and Redux state management.",
+    image: videoImg,
+    tech: ["React.js", "Redux", "WebSockets", "Node.js", "MongoDB"],
+    githubUrl: "#",
+    category: "Full Stack",
+  },
+    {
+    title: "Ecomerse Website",
+    description:
+      "An e-commerce website built using HTML, CSS, and JavaScript, inspired by online shopping platforms. Features include product listings, individual product pages, a shopping cart, price calculations, checkout, and a simulated payment process.",
+    image: ecomerse,
+    tech: ["HTML", "CSS", "JavaScript"],
+    githubUrl: "https://github.com/RakeshDevarakonda/ecomerse3",
+    category: "Frontend",
+  },
+   {
+    title: "JOBPORTALWEBSITE",
+    description:
+      "A job portal website where recruiters can post jobs and view applications, while candidates can apply for jobs and track their applications. Built with PHP and MySQL for CRUD operations and dynamic data management.",
+    image: jobportal,
+    tech: ["PHP", "MySQL", "HTML", "CSS", "JavaScript"],
+    githubUrl: "https://github.com/RakeshDevarakonda/JOBPORTALWEBSITE",
+    category: "Full Stack",
+  },
+  {
+    title: "Real-Time-Note-Application",
+    description:
+      "A real-time collaborative notes application where users can create and join note rooms. Any changes made in a note are instantly visible to all participants, and everyone can edit notes simultaneously, similar to Google Docs.",
+    image: realtimenotes,
+    tech: ["React", "Redux", "Socket.IO", "Node.js", "MongoDB", "Tailwind CSS"],
+    githubUrl: "https://github.com/RakeshDevarakonda/Real-Time-Note-Application",
+    category: "Full Stack",
+  },
+  {
+    title: "GENAI-WITH-OLLAMA",
+    description:
+      "A generative AI project integrated with React and Node.js, using Ollama running locally instead of external AI APIs.",
+    image: ollama,
+    tech: ["React", "Node.js", "JavaScript", "HTML", "CSS"],
+    githubUrl: "https://github.com/RakeshDevarakonda/GENAI-WITH-OLLAMA",
+    category: "Full Stack",
+  },
+  {
+    title: "Polling-System",
+    description:
+      "A polling system API where users can create questions, add options, vote on options, and view questions along with their options and votes. It also supports restricted deletion of questions and options. Built using Node.js, Express.js, and MongoDB.",
+     image: "https://images.pexels.com/photos/7103170/pexels-photo-7103170.jpeg",
+    tech: ["Node.js", "Express.js", "MongoDB"],
+    githubUrl: "https://github.com/RakeshDevarakonda/Polling-System",
+    category: "Backend",
+  },
+
+
+    {
+    title: "Live Chat Application",
+    description:
+      "A real-time chat application where users can send and receive messages instantly. Built with Node.js, Express.js,Ejs and Socket.IO  for real-time communication.",
+    image: livechatapp,
+    tech: ["Node.js", "Express.js", "MongoDB"],
+    githubUrl: "https://github.com/RakeshDevarakonda/Polling-System",
+    category: "Backend",
+  },
+
+
+  {
+    title: "Real-Time-Chat-Application-API",
+    description:
+      "A WhatsApp-like chat API built with Node.js, Express.js, and MongoDB. It uses JWT authentication and allows users to create groups, send messages, and send group messages, without using sockets.",
+      image: "https://images.pexels.com/photos/1181675/pexels-photo-1181675.jpeg",
+    tech: ["Node.js", "Express.js", "MongoDB", "JWT"],
+    githubUrl: "https://github.com/RakeshDevarakonda/Real-Time-Chat-Application-API",
+    category: "Backend",
+  },
+  {
+    title: "TruPulse_Project",
+    description:
+      "An offline notes application that uses IndexedDB for local storage and synchronizes data online when the user is available.",
+    image: truepulse,
+    tech: ["JavaScript", "IndexedDB"],
+    githubUrl: "https://github.com/RakeshDevarakonda/TruPulse_Project",
+    category: "Frontend",
+  },
+
+  {
+    title: "Rentify",
+    description:
+      "A property rental platform similar to OLX where users can post properties, view listings, like properties, and express interest. When interest is mutual, both users receive each other's details via email.",
+    image: rentify,
+    tech: ["HTML", "CSS", "JavaScript", "Node.js", "Email Integration"],
+    githubUrl: "https://github.com/RakeshDevarakonda/Rentify",
+    category: "Full Stack",
+  },
+  {
+    title: "Book-Review",
+    description:
+      "A RESTful API for managing books and reviews, built with Node.js, Express.js, and MongoDB. Features include user authentication with JWT, adding and retrieving books with pagination and search, and managing reviews (add, update, delete) with user-specific restrictions.",
+ image: "https://images.pexels.com/photos/33609917/pexels-photo-33609917.jpeg",
+    tech: ["Node.js", "Express.js", "MongoDB", "JWT"],
+    githubUrl: "https://github.com/RakeshDevarakonda/Book-Review",
+    category: "Backend",
+  }
+];
+
+const ProjectsSwiper = () => {
+  const projectsPerSlide = 3; // Projects per Swiper slide
+  const slides = [];
+
+  for (let i = 0; i < projects.length; i += projectsPerSlide) {
+    const slice = projects.slice(i, i + projectsPerSlide);
+
+    // Fill last slide with projects from start if needed
+    if (slice.length < projectsPerSlide) {
+      const remaining = projectsPerSlide - slice.length;
+      slides.push([...slice, ...projects.slice(0, remaining)]);
+    } else {
+      slides.push(slice);
+    }
+  }
+
+  const itemVariants = {
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+  };
+
+  return (
+    <section id="projects" className="py-20 relative">
+      <div className="container mx-auto px-6">
+        {/* Title */}
+        <div className="text-center mb-16">
+          <h2 className="text-4xl lg:text-5xl font-bold mb-4">
+            Featured{" "}
+            <span className="bg-gradient-primary bg-clip-text text-transparent">
+              Projects
+            </span>
+          </h2>
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+            Showcase of my recent work and personal projects
+          </p>
+        </div>
+
+        {/* Swiper */}
+        <Swiper
+          modules={[Pagination, Autoplay]} // removed Navigation
+          pagination={{ clickable: true }}
+          autoplay={{ delay: 5000, disableOnInteraction: false }}
+          loop={true}
+          spaceBetween={30}
+          slidesPerView={1}
+          grabCursor={true}
+          style={{ paddingBottom: "50px" }}
+        >
+          {slides.map((slideProjects, slideIndex) => (
+            <SwiperSlide key={slideIndex}>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {slideProjects.map((project, index) => (
+                  <motion.div
+                    key={project.title + index}
+                    variants={itemVariants}
+                    initial="hidden"
+                    whileInView="visible"
+                    transition={{ duration: 0.6, staggerChildren: 0.1 }}
+                    whileHover={{ y: -5 }}
+                  >
+                    <Card className="overflow-hidden bg-gradient-card border-border/50 hover:border-primary/50 transition-all duration-500 hover:shadow-glow-hover h-full flex flex-col">
+                      {/* Project Image */}
+                      <div className="relative overflow-hidden">
+                        <motion.img
+                          src={project.image}
+                          alt={project.title}
+                          className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        <div className="absolute top-4 left-4">
+                          <span className="px-3 py-1 bg-primary/20 text-primary text-xs font-medium rounded-full border border-primary/30">
+                            {project.category}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Project Content */}
+                      <div className="p-6 flex flex-col flex-1">
+                        <h3 className="text-xl font-bold mb-3 text-foreground group-hover:text-primary transition-colors">
+                          {project.title}
+                        </h3>
+                        <p className="text-muted-foreground text-sm leading-relaxed mb-4 flex-1">
+                          {project.description}
+                        </p>
+
+                        {/* Tech Stack */}
+                        <div className="flex flex-wrap gap-2 mb-4">
+                          {project.tech.map((tech, techIndex) => (
+                            <span
+                              key={tech}
+                              className="px-2 py-1 bg-muted text-muted-foreground text-xs rounded-md border border-border hover:border-primary/50 hover:text-primary transition-all duration-300"
+                            >
+                              {tech}
+                            </span>
+                          ))}
+                        </div>
+
+                        {/* GitHub Button */}
+                        <div className="flex gap-3 mt-auto">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="flex-1 hover:scale-105"
+                            asChild
+                          >
+                            <a
+                              href={project.githubUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              <Github className="w-4 h-4 mr-2" />
+                              GitHub
+                            </a>
+                          </Button>
+                        </div>
+                      </div>
+                    </Card>
+                  </motion.div>
+                ))}
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
+    </section>
+  );
+};
+
+export default ProjectsSwiper;
