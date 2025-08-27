@@ -1,4 +1,4 @@
-"use client";
+"use client2";
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 
