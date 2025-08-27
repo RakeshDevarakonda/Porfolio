@@ -45,7 +45,7 @@ const Hero = () => {
   const sparkles = Array.from({ length: 12 }, (_, i) => i * 30);
 
   return (
-    <section id="home" className="min-h-screen relative flex items-center justify-center overflow-hidden">
+    <section id="home" className=" mt-20 md:mt-0 min-h-screen relative flex items-center justify-center overflow-hidden">
       {/* Background */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-10"
