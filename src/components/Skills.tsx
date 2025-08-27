@@ -48,7 +48,7 @@ export default function SkillsSwiperGrid() {
         <Swiper
           modules={[Pagination, Autoplay]}
           pagination={{ clickable: true }}
-          autoplay={{ delay: 4000, disableOnInteraction: true }}
+          autoplay={{ delay: 4000, disableOnInteraction: false }}
           loop={true}
           spaceBetween={30}
           grabCursor={true}

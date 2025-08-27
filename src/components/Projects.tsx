@@ -153,7 +153,7 @@ const ProjectsSwiper = () => {
         <Swiper
           modules={[Pagination, Autoplay]}
           pagination={{ clickable: true }}
-          autoplay={{ delay: 5000, disableOnInteraction: true }}
+          autoplay={{ delay: 5000, disableOnInteraction: false }}
           loop={true}
           spaceBetween={30}
           grabCursor={true}
