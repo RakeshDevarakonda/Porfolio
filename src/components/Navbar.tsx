@@ -114,7 +114,7 @@ const Navbar = () => {
             rel="noopener noreferrer"
           >
             <Button variant="neon" size="sm" className="w-full">
-              Download Resume
+              View Resume
             </Button>
           </a>
         </div>
