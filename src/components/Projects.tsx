@@ -189,7 +189,7 @@ const ProjectsSwiper = () => {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     <div className="absolute top-4 left-4">
-                      <span className="px-3 py-1 bg-primary/20 text-primary text-xs font-medium rounded-full border border-primary/30 bg-black">
+                      <span className="px-3 py-1  text-primary text-xs font-medium rounded-full border border-primary/30 bg-black">
                         {project.category}
                       </span>
                     </div>
