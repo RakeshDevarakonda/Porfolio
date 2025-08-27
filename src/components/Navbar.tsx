@@ -75,7 +75,7 @@ const Navbar = () => {
             rel="noopener noreferrer"
           >
             <Button variant="neon" size="sm" className="hidden md:inline-flex">
-              Download Resume
+              View Resume
             </Button>
           </a>
         </div>
