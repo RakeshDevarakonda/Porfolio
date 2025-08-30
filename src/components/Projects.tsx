@@ -49,6 +49,15 @@ const projects = [
     category: "Frontend",
   },
   {
+    title: "Library Management System",
+    description:
+      "A library management system API with REST and GraphQL endpoints, allowing users to manage books, authors, and borrowers.",
+    image: "https://images.pexels.com/photos/1181675/pexels-photo-1181675.jpeg",
+    tech: ["Node.js", "Express.js", "MongoDB","RestApi","GraphQl"],
+    githubUrl: "https://github.com/RakeshDevarakonda/Libarary-Managemant-RestApi-And-GraphQl",
+    category: "Backend",
+  },
+  {
     title: "JOBPORTALWEBSITE",
     description:
       "A job portal website where recruiters can post jobs and view applications, while candidates can apply for jobs and track their applications.",

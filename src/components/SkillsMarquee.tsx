@@ -10,6 +10,7 @@ const skills = [
   "Docker",
   "Redis",
   "GraphQL",
+  "RestApi"
 ];
 
 export default function SkillsMarquee() {
