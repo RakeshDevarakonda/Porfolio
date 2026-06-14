@@ -69,7 +69,7 @@ const Navbar = () => {
 
           {/* Desktop Resume Button */}
           <a
-            href="https://drive.google.com/file/d/1_J5LKbraTWvi6q65iC3bpDdd2M_SwEvP/view?usp=sharing"
+            href="https://drive.google.com/file/d/1nS-vHeGPcXep7HTfzL_CJSu5EreEms3L/view?usp=sharing"
             target="_blank"
             download="Rakesh_Resume.pdf"
             rel="noopener noreferrer"
