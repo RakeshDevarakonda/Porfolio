@@ -68,7 +68,7 @@ const Navbar = () => {
           </div>
 
           {/* Desktop Resume Button */}
-          <a
+          {/* <a
             href="https://drive.google.com/file/d/1nS-vHeGPcXep7HTfzL_CJSu5EreEms3L/view?usp=sharing"
             target="_blank"
             download="Rakesh_Resume.pdf"
@@ -77,7 +77,7 @@ const Navbar = () => {
             <Button variant="neon" size="sm" className="hidden md:inline-flex">
               View Resume
             </Button>
-          </a>
+          </a> */}
         </div>
       </div>
 
