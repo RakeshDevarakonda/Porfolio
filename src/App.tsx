@@ -33,11 +33,11 @@ import {
 import { About3DViewer } from './components/About3DViewer'
 import { ArchitectureEngine } from './components/ArchitectureEngine'
 import { GithubIcon, LinkedinIcon } from './components/BrandIcons'
+import { BirdFollower } from './components/BirdFollower'
 import { CursorFollower } from './components/CursorFollower'
 import { Full3DWorld } from './components/Full3DWorld'
 import { InteractiveTerminal } from './components/InteractiveTerminal'
 import { Preloader3D } from './components/Preloader3D'
-import { PuppyFollower } from './components/PuppyFollower'
 import { Reveal } from './components/Reveal'
 import { SectionHeading } from './components/SectionHeading'
 import { SystemsScene } from './components/SystemsScene'
@@ -181,7 +181,7 @@ function App() {
       {/* Full 3D Background World */}
       <Full3DWorld />
       <CursorFollower />
-      <PuppyFollower />
+      <BirdFollower />
       <ToastContainer toasts={toasts} onDismiss={removeToast} />
 
       {/* Reading Progress Line */}
