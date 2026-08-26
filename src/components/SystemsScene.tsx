@@ -5,22 +5,24 @@ interface SkillNode {
   category: string
   level: string
   color: number
+  colorHex: string
+  iconSymbol: string
   pos: [number, number, number]
 }
 
 const matrixSkills: SkillNode[] = [
-  { name: 'Node.js', category: 'Backend Tier', level: 'Production REST & Auth APIs', color: 0x38bdf8, pos: [-2.2, 1.6, 0.5] },
-  { name: 'Go (Golang)', category: 'High-Concurrency Core', level: 'Gin Microservices & Pipelines', color: 0x34d399, pos: [2.2, 1.6, 0.5] },
-  { name: 'TypeScript', category: 'Language Tier', level: 'Strict Enterprise Schemas', color: 0x38bdf8, pos: [-3.0, 0.1, 0.2] },
-  { name: 'PostgreSQL', category: 'Relational DB', level: 'ACID & Multi-Tenant RBAC', color: 0xc084fc, pos: [3.0, 0.1, 0.2] },
-  { name: 'MongoDB', category: 'Document Store', level: 'Workspace Query Abstraction', color: 0x34d399, pos: [-2.2, -1.5, 0.5] },
-  { name: 'AWS Cloud', category: 'Cloud Pipeline', level: 'SQS Queues & Lambda Triggers', color: 0x38bdf8, pos: [2.2, -1.5, 0.5] },
-  { name: 'Docker', category: 'DevOps', level: 'Container Orchestration', color: 0x38bdf8, pos: [0, 2.5, -0.8] },
-  { name: 'WebSockets', category: 'Real-Time Tier', level: 'Sub-100ms Streaming & Sync', color: 0xc084fc, pos: [0, -2.5, -0.8] },
-  { name: 'Python', category: 'Scripting', level: 'Automation & Data Pipelines', color: 0x38bdf8, pos: [-1.2, 0.8, -1.2] },
-  { name: 'Redis', category: 'In-Memory Cache', level: 'Pub/Sub & Session Storage', color: 0x34d399, pos: [1.2, 0.8, -1.2] },
-  { name: 'React 18', category: 'Frontend UI', level: 'Concurrent Mode Components', color: 0x34d399, pos: [-1.2, -0.8, -1.2] },
-  { name: 'Next.js', category: 'Full Stack UI', level: 'App Router & Server Actions', color: 0xc084fc, pos: [1.2, -0.8, -1.2] },
+  { name: 'Node.js', category: 'Backend Tier', level: 'Production REST & Auth APIs', color: 0x38bdf8, colorHex: '#38bdf8', iconSymbol: '⬢', pos: [-2.2, 1.6, 0.5] },
+  { name: 'Go (Golang)', category: 'High-Concurrency Core', level: 'Gin Microservices & Pipelines', color: 0x34d399, colorHex: '#34d399', iconSymbol: '🦫', pos: [2.2, 1.6, 0.5] },
+  { name: 'TypeScript', category: 'Language Tier', level: 'Strict Enterprise Schemas', color: 0x38bdf8, colorHex: '#38bdf8', iconSymbol: 'TS', pos: [-3.0, 0.1, 0.2] },
+  { name: 'PostgreSQL', category: 'Relational DB', level: 'ACID & Multi-Tenant RBAC', color: 0xc084fc, colorHex: '#c084fc', iconSymbol: '🐘', pos: [3.0, 0.1, 0.2] },
+  { name: 'MongoDB', category: 'Document Store', level: 'Workspace Query Abstraction', color: 0x34d399, colorHex: '#34d399', iconSymbol: '🍃', pos: [-2.2, -1.5, 0.5] },
+  { name: 'AWS Cloud', category: 'Cloud Pipeline', level: 'SQS Queues & Lambda Triggers', color: 0x38bdf8, colorHex: '#38bdf8', iconSymbol: '☁', pos: [2.2, -1.5, 0.5] },
+  { name: 'Docker', category: 'DevOps', level: 'Container Orchestration', color: 0x38bdf8, colorHex: '#38bdf8', iconSymbol: '🐳', pos: [0, 2.5, -0.8] },
+  { name: 'WebSockets', category: 'Real-Time Tier', level: 'Sub-100ms Streaming & Sync', color: 0xc084fc, colorHex: '#c084fc', iconSymbol: '⚡', pos: [0, -2.5, -0.8] },
+  { name: 'Python', category: 'Scripting', level: 'Automation & Data Pipelines', color: 0x38bdf8, colorHex: '#38bdf8', iconSymbol: '🐍', pos: [-1.2, 0.8, -1.2] },
+  { name: 'Redis', category: 'In-Memory Cache', level: 'Pub/Sub & Session Storage', color: 0x34d399, colorHex: '#34d399', iconSymbol: '🔴', pos: [1.2, 0.8, -1.2] },
+  { name: 'React 18', category: 'Frontend UI', level: 'Concurrent Mode Components', color: 0x34d399, colorHex: '#34d399', iconSymbol: '⚛', pos: [-1.2, -0.8, -1.2] },
+  { name: 'Next.js', category: 'Full Stack UI', level: 'App Router & Server Actions', color: 0xc084fc, colorHex: '#c084fc', iconSymbol: '▲', pos: [1.2, -0.8, -1.2] },
 ]
 
 export function SystemsScene() {
@@ -90,7 +92,7 @@ export function SystemsScene() {
       const cageMesh = new THREE.Mesh(cageGeo, cageMat)
       matrixGroup.add(cageMesh)
 
-      // 2. Build 3D Skill Nodes & Floating 3D Text Labels
+      // 2. Build 3D Skill Nodes & Floating 3D Logo Canvas Labels
       const nodeMeshes: InstanceType<typeof THREE.Mesh>[] = []
 
       matrixSkills.forEach((skill) => {
@@ -111,23 +113,37 @@ export function SystemsScene() {
         matrixGroup.add(mesh)
         nodeMeshes.push(mesh)
 
-        // Floating 2D Canvas Text Sprite
+        // Floating 2D Canvas Logo Sprite
         const textCanvas = document.createElement('canvas')
-        textCanvas.width = 256
-        textCanvas.height = 64
+        textCanvas.width = 300
+        textCanvas.height = 70
         const ctx = textCanvas.getContext('2d')
         if (ctx) {
-          ctx.fillStyle = '#ffffff'
-          ctx.font = 'bold 22px DM Mono, monospace'
-          ctx.textAlign = 'center'
+          // Draw dark glass rounded background
+          ctx.fillStyle = 'rgba(8, 14, 24, 0.88)'
+          ctx.strokeStyle = skill.colorHex
+          ctx.lineWidth = 2
+          ctx.beginPath()
+          ctx.roundRect(10, 10, 280, 50, 8)
+          ctx.fill()
+          ctx.stroke()
+
+          // Draw Logo Icon Symbol + Text Label
+          ctx.fillStyle = skill.colorHex
+          ctx.font = 'bold 20px DM Mono, monospace'
+          ctx.textAlign = 'left'
           ctx.textBaseline = 'middle'
-          ctx.fillText(skill.name, 128, 32)
+          ctx.fillText(skill.iconSymbol, 24, 35)
+
+          ctx.fillStyle = '#ffffff'
+          ctx.font = 'bold 18px DM Mono, monospace'
+          ctx.fillText(skill.name, 62, 35)
         }
         const textTexture = new THREE.CanvasTexture(textCanvas)
         const spriteMat = new THREE.SpriteMaterial({ map: textTexture, transparent: true })
         const sprite = new THREE.Sprite(spriteMat)
         sprite.position.set(skill.pos[0], skill.pos[1] - 0.45, skill.pos[2])
-        sprite.scale.set(1.5, 0.38, 1)
+        sprite.scale.set(1.6, 0.4, 1)
         matrixGroup.add(sprite)
 
         // Laser Beams to Core
@@ -256,7 +272,7 @@ export function SystemsScene() {
       {activeSkill ? (
         <div className="skills-3d-hud" style={{ top: 'auto', bottom: '0.8rem', right: '0.8rem' }}>
           <span className="skills-3d-hud__cat">{activeSkill.category}</span>
-          <strong className="skills-3d-hud__title">{activeSkill.name}</strong>
+          <strong className="skills-3d-hud__title">{activeSkill.iconSymbol} {activeSkill.name}</strong>
           <span className="skills-3d-hud__level">{activeSkill.level}</span>
         </div>
       ) : null}
