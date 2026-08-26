@@ -1,18 +1,21 @@
 import { useEffect, useState } from 'react'
 
+const bootLogs = [
+  '[ OK ] Initializing ARM64 Quantum Compute Layer...',
+  '[ OK ] Mounting PostgreSQL Relational RBAC Engine...',
+  '[ OK ] Establishing WebSocket Sub-100ms Channels...',
+  '[ OK ] Syncing AWS SQS & Lambda Async Queues...',
+  '[ OK ] Loading MERN & Go Microservices...',
+  '[ OK ] Verifying multi-tenant security boundaries...',
+  '[ ONLINE ] System fully operational.',
+]
+
 export function Preloader3D({ onComplete }: { onComplete?: () => void }) {
   const [progress, setProgress] = useState(0)
-  const [status, setStatus] = useState('> INITIALIZING COMMAND CORE...')
+  const [activeLogs, setActiveLogs] = useState<string[]>([bootLogs[0]])
   const [fadingOut, setFadingOut] = useState(false)
 
   useEffect(() => {
-    const statuses = [
-      '> INITIALIZING COMMAND CORE...',
-      '> LOADING BACKEND INFRASTRUCTURE & 3D MATRIX...',
-      '> CONNECTING MULTI-TENANT SERVICES & CLOUD PIPELINES...',
-      '> SYSTEM STATUS: 100% OPERATIONAL',
-    ]
-
     const interval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
@@ -20,49 +23,91 @@ export function Preloader3D({ onComplete }: { onComplete?: () => void }) {
           setFadingOut(true)
           setTimeout(() => {
             onComplete?.()
-          }, 500)
+          }, 450)
           return 100
         }
-        const next = prev + Math.floor(Math.random() * 15) + 10
-        const statusIdx = Math.min(Math.floor((next / 100) * statuses.length), statuses.length - 1)
-        setStatus(statuses[statusIdx])
+        const next = prev + Math.floor(Math.random() * 16) + 12
+        const logCount = Math.min(Math.floor((next / 100) * bootLogs.length) + 1, bootLogs.length)
+        setActiveLogs(bootLogs.slice(0, logCount))
         return Math.min(next, 100)
       })
-    }, 80)
+    }, 75)
 
     return () => clearInterval(interval)
   }, [onComplete])
 
   return (
     <div className={`preloader-3d ${fadingOut ? 'is-fading' : ''}`} aria-hidden="true">
-      <div className="preloader-3d__content">
-        {/* Sleek Brand Core Emblem */}
+      <div className="preloader-3d__content" style={{ width: 'min(100% - 2.5rem, 440px)' }}>
+        {/* Startup Terminal Header */}
         <div style={{
-          width: '64px',
-          height: '64px',
-          borderRadius: '12px',
-          border: '1px solid var(--blue)',
-          background: 'rgba(10, 16, 26, 0.9)',
-          display: 'grid',
-          placeItems: 'center',
-          boxShadow: '0 0 25px color-mix(in srgb, var(--blue) 30%, transparent)',
-          fontSize: '1.2rem',
-          fontWeight: 800,
-          color: 'var(--blue)',
+          width: '100%',
+          padding: '0.6rem 0.9rem',
+          borderRadius: '8px 8px 0 0',
+          border: '1px solid var(--line-strong)',
+          borderBottom: '0',
+          background: 'rgba(10, 16, 26, 0.95)',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
           fontFamily: 'var(--mono)',
+          fontSize: '0.62rem',
+          color: 'var(--blue)',
         }}>
-          RD
+          <span>RD_SYSTEM_BOOT // INITIALIZATION</span>
+          <span className="status-dot" />
         </div>
 
-        <div className="preloader-3d__counter">
-          <strong>{progress}<i>%</i></strong>
+        {/* Startup Terminal Log Window */}
+        <div style={{
+          width: '100%',
+          height: '130px',
+          padding: '0.8rem 0.9rem',
+          border: '1px solid var(--line-strong)',
+          background: 'rgba(5, 8, 15, 0.95)',
+          fontFamily: 'var(--mono)',
+          fontSize: '0.63rem',
+          color: 'var(--text-soft)',
+          textAlign: 'left',
+          overflow: 'hidden',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'flex-end',
+          gap: '0.35rem',
+        }}>
+          {activeLogs.map((log, idx) => (
+            <div key={idx} style={{
+              color: log.includes('ONLINE') ? 'var(--mint)' : 'var(--blue)',
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+            }}>
+              {log}
+            </div>
+          ))}
         </div>
 
-        <div className="preloader-3d__bar-track">
-          <div className="preloader-3d__bar-fill" style={{ width: `${progress}%` }} />
-        </div>
+        {/* Progress Display */}
+        <div style={{
+          width: '100%',
+          padding: '0.9rem 1rem',
+          borderRadius: '0 0 8px 8px',
+          border: '1px solid var(--line-strong)',
+          borderTop: '0',
+          background: 'rgba(10, 16, 26, 0.95)',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '0.6rem',
+        }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: 'var(--mono)', fontSize: '0.72rem' }}>
+            <span style={{ color: 'var(--text-muted)' }}>BOOT PROGRESS</span>
+            <strong style={{ color: 'var(--blue)' }}>{progress}%</strong>
+          </div>
 
-        <p className="preloader-3d__status">{status}</p>
+          <div className="preloader-3d__bar-track" style={{ height: '5px' }}>
+            <div className="preloader-3d__bar-fill" style={{ width: `${progress}%` }} />
+          </div>
+        </div>
       </div>
 
       <div className="preloader-3d__bg-grid" />
