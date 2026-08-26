@@ -27,9 +27,9 @@ const buildingCards: BuildingCard[] = [
   {
     title: 'MULTI-TENANT PLATFORMS',
     desc: 'Strict workspace data isolation, granular RBAC access controls, and multi-tenant DB query scoping.',
-    accent: 'mint',
     icon: Lock,
     route: 'User Token → Workspace Isolation → DB Query Scoping',
+    accent: 'mint',
   },
   {
     title: 'BACKEND APIs & MICROSERVICES',
@@ -58,7 +58,7 @@ export function WhatILikeBuilding() {
   return (
     <div className="what-i-like-building">
       <div className="section-heading">
-        <span className="section-index">06</span>
+        <span className="section-index">05</span>
         <div>
           <h2>WHAT I LIKE BUILDING</h2>
           <p>The engineering domains and architectural patterns I enjoy untangling most in production.</p>

@@ -57,12 +57,12 @@ const navItems = [
   ['CONTACT', 'contact'],
 ] as const
 
-const projectCategoryTabs: { label: string; value: ProjectCategory }[] = [
-  { label: 'All Projects', value: 'all' },
-  { label: 'Backend & APIs', value: 'backend' },
-  { label: 'Full Stack', value: 'fullstack' },
-  { label: 'DevTools / NPM', value: 'devtools' },
-  { label: 'Real-Time', value: 'realtime' },
+const projectCategoryTabs: { label: string; value: ProjectCategory; count: number }[] = [
+  { label: 'All Projects', value: 'all', count: projects.length },
+  { label: 'Backend & APIs', value: 'backend', count: projects.filter((p) => p.category === 'backend').length },
+  { label: 'Full Stack', value: 'fullstack', count: projects.filter((p) => p.category === 'fullstack').length },
+  { label: 'DevTools / NPM', value: 'devtools', count: projects.filter((p) => p.category === 'devtools').length },
+  { label: 'Real-Time', value: 'realtime', count: projects.filter((p) => p.category === 'realtime').length },
 ]
 
 const focusIcons = [ShieldCheck, Zap, Activity]
@@ -442,7 +442,7 @@ function App() {
           </div>
         </section>
 
-        {/* Section 11: Architecture - The Engine */}
+        {/* Section 03: Architecture - The Engine */}
         <section id="architecture" className="section section--bordered">
           <Reveal>
             <ArchitectureEngine />
@@ -456,7 +456,7 @@ function App() {
             </Reveal>
             <div className="project-showcase">
 
-              {/* Category Filter Pills */}
+              {/* Category Filter Pills with Live Project Counts */}
               <Reveal className="project-filter-bar">
                 {projectCategoryTabs.map((tab) => (
                   <button
@@ -464,7 +464,7 @@ function App() {
                     className={`project-filter-btn ${selectedCategory === tab.value ? 'is-active' : ''}`}
                     onClick={() => setSelectedCategory(tab.value)}
                   >
-                    {tab.label}
+                    {tab.label} ({tab.count})
                   </button>
                 ))}
               </Reveal>
@@ -533,7 +533,7 @@ function App() {
           </div>
         </section>
 
-        {/* Section 19: What I Like Building */}
+        {/* Section 05: What I Like Building */}
         <section className="section section--bordered">
           <Reveal>
             <WhatILikeBuilding />
@@ -543,7 +543,7 @@ function App() {
         <section id="opensource" className="section section--bordered" aria-labelledby="opensource-title">
           <div className="content-grid content-grid--opensource">
             <Reveal>
-              <SectionHeading index="05" title="OPEN SOURCE PROTOCOL" description="Built not only to solve my own problems, but to make other developers' lives easier." />
+              <SectionHeading index="06" title="OPEN SOURCE PROTOCOL" description="Built not only to solve my own problems, but to make other developers' lives easier." />
             </Reveal>
             <Reveal className="github-panel-wrapper" delay={100}>
               <TiltCard3D className="github-panel">
@@ -585,7 +585,7 @@ function App() {
         <section id="education" className="section section--bordered" aria-labelledby="education-title">
           <div className="two-column-section">
             <Reveal className="subsection">
-              <SectionHeading index="06" title="Education" />
+              <SectionHeading index="07" title="Education" />
               <div className="education-list">
                 {education.map((item) => (
                   <div className="education-item" key={item.program}>
@@ -600,7 +600,7 @@ function App() {
               </div>
             </Reveal>
             <Reveal className="subsection subsection--achievements" delay={100}>
-              <SectionHeading index="07" title="Achievements" />
+              <SectionHeading index="08" title="Achievements" />
               <div className="achievement-list">
                 {achievements.map((item) => (
                   <a
@@ -632,7 +632,7 @@ function App() {
         <section id="contact" className="section section--contact section--bordered" aria-labelledby="contact-title">
           <div className="content-grid content-grid--contact">
             <Reveal>
-              <SectionHeading index="08" title="BUILD SOMETHING WORTH SCALING" description="Have a difficult backend problem, a product idea, or a system that needs to scale? Send a note." />
+              <SectionHeading index="09" title="BUILD SOMETHING WORTH SCALING" description="Have a difficult backend problem, a product idea, or a system that needs to scale? Send a note." />
             </Reveal>
             <Reveal className="contact-layout" delay={100}>
               <div className="contact-details">
