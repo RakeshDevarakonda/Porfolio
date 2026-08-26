@@ -1,13 +1,10 @@
 import { useEffect, useState } from 'react'
 
 const bootLogs = [
-  '[ OK ] Initializing ARM64 Quantum Compute Layer...',
-  '[ OK ] Mounting PostgreSQL Relational RBAC Engine...',
-  '[ OK ] Establishing WebSocket Sub-100ms Channels...',
-  '[ OK ] Syncing AWS SQS & Lambda Async Queues...',
-  '[ OK ] Loading MERN & Go Microservices...',
-  '[ OK ] Verifying multi-tenant security boundaries...',
-  '[ ONLINE ] System fully operational.',
+  '[ OK ] Initializing Compute Layer...',
+  '[ OK ] Mounting PostgreSQL RBAC Engine...',
+  '[ OK ] Syncing AWS SQS & Lambda Queues...',
+  '[ ONLINE ] System operational.',
 ]
 
 export function Preloader3D({ onComplete }: { onComplete?: () => void }) {
@@ -16,8 +13,8 @@ export function Preloader3D({ onComplete }: { onComplete?: () => void }) {
   const [fadingOut, setFadingOut] = useState(false)
 
   useEffect(() => {
-    // Fast snappy duration ~1000ms (1.0 second) across 20 ticks of 50ms
-    const totalTicks = 20
+    // Ultra-fast instant loader ~300ms total
+    const totalTicks = 8
     let currentTick = 0
 
     const interval = setInterval(() => {
@@ -30,14 +27,12 @@ export function Preloader3D({ onComplete }: { onComplete?: () => void }) {
 
       if (currentTick >= totalTicks) {
         clearInterval(interval)
+        setFadingOut(true)
         setTimeout(() => {
-          setFadingOut(true)
-          setTimeout(() => {
-            onComplete?.()
-          }, 350)
-        }, 100)
+          onComplete?.()
+        }, 200)
       }
-    }, 50)
+    }, 35)
 
     return () => clearInterval(interval)
   }, [onComplete])
@@ -67,7 +62,7 @@ export function Preloader3D({ onComplete }: { onComplete?: () => void }) {
         {/* Startup Terminal Log Window */}
         <div style={{
           width: '100%',
-          height: '130px',
+          height: '110px',
           padding: '0.8rem 0.9rem',
           border: '1px solid var(--line-strong)',
           background: 'rgba(5, 8, 15, 0.95)',
