@@ -54,7 +54,7 @@ export function SystemsScene() {
       const globeGroup = new THREE.Group()
       scene.add(globeGroup)
 
-      // 1. High-Density Holographic Globe Sphere
+      // 1. Clean Holographic Globe Sphere
       const globeGeo = new THREE.IcosahedronGeometry(2.5, 3)
       const globeMat = new THREE.MeshStandardMaterial({
         color: 0x38bdf8,
@@ -67,28 +67,7 @@ export function SystemsScene() {
       const outerGlobe = new THREE.Mesh(globeGeo, globeMat)
       globeGroup.add(outerGlobe)
 
-      // 2. Latitude & Longitude Orbital Rings
-      const ring1Geo = new THREE.TorusGeometry(2.95, 0.02, 16, 100)
-      const ring1Mat = new THREE.MeshStandardMaterial({
-        color: 0x38bdf8,
-        emissive: 0x38bdf8,
-        emissiveIntensity: 2.0,
-      })
-      const ring1 = new THREE.Mesh(ring1Geo, ring1Mat)
-      ring1.rotation.x = Math.PI / 3
-      globeGroup.add(ring1)
-
-      const ring2Geo = new THREE.TorusGeometry(3.25, 0.018, 16, 100)
-      const ring2Mat = new THREE.MeshStandardMaterial({
-        color: 0x34d399,
-        emissive: 0x34d399,
-        emissiveIntensity: 1.8,
-      })
-      const ring2 = new THREE.Mesh(ring2Geo, ring2Mat)
-      ring2.rotation.y = Math.PI / 4
-      globeGroup.add(ring2)
-
-      // 3. Endpoint Crystal Nodes
+      // 2. Endpoint Crystal Nodes
       const nodeMeshes: InstanceType<typeof THREE.Mesh>[] = []
 
       heroEndpoints.forEach((ep) => {
@@ -115,7 +94,7 @@ export function SystemsScene() {
         globeGroup.add(line)
       })
 
-      // 4. Central Core
+      // 3. Central Core
       const coreGeo = new THREE.OctahedronGeometry(0.75, 1)
       const coreMat = new THREE.MeshStandardMaterial({
         color: 0x38bdf8,
@@ -168,8 +147,6 @@ export function SystemsScene() {
         outerGlobe.rotation.y = elapsed * 0.35
         outerGlobe.rotation.x = Math.sin(elapsed * 0.25) * 0.15
         centerCore.rotation.y = -elapsed * 0.8
-        ring1.rotation.z = elapsed * 0.5
-        ring2.rotation.z = -elapsed * 0.35
 
         globeGroup.rotation.y += (targetRotation.y - globeGroup.rotation.y) * 0.05
         globeGroup.rotation.x += (targetRotation.x - globeGroup.rotation.x) * 0.05
@@ -209,10 +186,6 @@ export function SystemsScene() {
         globeMat.dispose()
         coreGeo.dispose()
         coreMat.dispose()
-        ring1Geo.dispose()
-        ring1Mat.dispose()
-        ring2Geo.dispose()
-        ring2Mat.dispose()
         renderer.dispose()
       }
     }
