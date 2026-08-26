@@ -231,17 +231,6 @@ export function SystemsScene() {
       aria-label="3D Interactive Architecture Globe"
     >
       <canvas ref={canvasRef} className="systems-scene__canvas" />
-
-      {/* Dynamic Telemetry HUD Overlay */}
-      <div className="marvel-hero-hud">
-        <span className="marvel-hero-hud__tag">3D ARCHITECTURE GLOBE // HERO CORE</span>
-        <strong className="marvel-hero-hud__title">
-          {hoveredEndpoint ? hoveredEndpoint.name : 'SYSTEM INFRASTRUCTURE GLOBE'}
-        </strong>
-        <span className="marvel-hero-hud__detail">
-          {hoveredEndpoint ? hoveredEndpoint.detail : 'Interactive 3D System Sphere · Hover endpoints to inspect architecture'}
-        </span>
-      </div>
     </div>
   )
 }
