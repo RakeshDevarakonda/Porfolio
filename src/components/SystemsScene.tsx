@@ -1,38 +1,38 @@
 import { useEffect, useRef, useState } from 'react'
 
-interface SkillItem {
+interface SkillNode {
   name: string
   category: string
   level: string
   color: number
-  colorHex: string
+  pos: [number, number, number]
 }
 
-const heroSkillsList: SkillItem[] = [
-  { name: 'Node.js', category: 'Backend', level: 'Production / High-Scale', color: 0x38bdf8, colorHex: '#38bdf8' },
-  { name: 'Go (Golang)', category: 'Backend', level: 'High-Concurrency Core', color: 0x34d399, colorHex: '#34d399' },
-  { name: 'TypeScript', category: 'Languages', level: 'Strict Type Systems', color: 0x38bdf8, colorHex: '#38bdf8' },
-  { name: 'PostgreSQL', category: 'Database', level: 'ACID & Relational Schemas', color: 0xc084fc, colorHex: '#c084fc' },
-  { name: 'MongoDB', category: 'Database', level: 'Multi-Tenant Data Layer', color: 0x34d399, colorHex: '#34d399' },
-  { name: 'AWS SQS & Lambda', category: 'Cloud', level: 'Event-Driven Serverless', color: 0x38bdf8, colorHex: '#38bdf8' },
-  { name: 'Docker', category: 'Cloud', level: 'Containerization & Deploy', color: 0x38bdf8, colorHex: '#38bdf8' },
-  { name: 'WebSockets', category: 'Real-Time', level: 'Sub-100ms Live Sync', color: 0xc084fc, colorHex: '#c084fc' },
-  { name: 'Python', category: 'Languages', level: 'Scripting & Automation', color: 0x38bdf8, colorHex: '#38bdf8' },
-  { name: 'Redis', category: 'Database', level: 'In-Memory Cache & PubSub', color: 0x34d399, colorHex: '#34d399' },
-  { name: 'React 18', category: 'Frontend', level: 'Modern Concurrent UI', color: 0x34d399, colorHex: '#34d399' },
-  { name: 'Next.js', category: 'Frontend', level: 'SSR & App Router', color: 0xc084fc, colorHex: '#c084fc' },
+const matrixSkills: SkillNode[] = [
+  { name: 'Node.js', category: 'Backend Tier', level: 'Production REST & Auth APIs', color: 0x38bdf8, pos: [-2.2, 1.6, 0.5] },
+  { name: 'Go (Golang)', category: 'High-Concurrency Core', level: 'Gin Microservices & Pipelines', color: 0x34d399, pos: [2.2, 1.6, 0.5] },
+  { name: 'TypeScript', category: 'Language Tier', level: 'Strict Enterprise Schemas', color: 0x38bdf8, pos: [-3.0, 0.1, 0.2] },
+  { name: 'PostgreSQL', category: 'Relational DB', level: 'ACID & Multi-Tenant RBAC', color: 0xc084fc, pos: [3.0, 0.1, 0.2] },
+  { name: 'MongoDB', category: 'Document Store', level: 'Workspace Query Abstraction', color: 0x34d399, pos: [-2.2, -1.5, 0.5] },
+  { name: 'AWS Cloud', category: 'Cloud Pipeline', level: 'SQS Queues & Lambda Triggers', color: 0x38bdf8, pos: [2.2, -1.5, 0.5] },
+  { name: 'Docker', category: 'DevOps', level: 'Container Orchestration', color: 0x38bdf8, pos: [0, 2.5, -0.8] },
+  { name: 'WebSockets', category: 'Real-Time Tier', level: 'Sub-100ms Streaming & Sync', color: 0xc084fc, pos: [0, -2.5, -0.8] },
+  { name: 'Python', category: 'Scripting', level: 'Automation & Data Pipelines', color: 0x38bdf8, pos: [-1.2, 0.8, -1.2] },
+  { name: 'Redis', category: 'In-Memory Cache', level: 'Pub/Sub & Session Storage', color: 0x34d399, pos: [1.2, 0.8, -1.2] },
+  { name: 'React 18', category: 'Frontend UI', level: 'Concurrent Mode Components', color: 0x34d399, pos: [-1.2, -0.8, -1.2] },
+  { name: 'Next.js', category: 'Full Stack UI', level: 'App Router & Server Actions', color: 0xc084fc, pos: [1.2, -0.8, -1.2] },
 ]
 
 export function SystemsScene() {
   const containerRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const [selectedSkill, setSelectedSkill] = useState<SkillItem>(heroSkillsList[0])
-  const selectedSkillRef = useRef<SkillItem>(heroSkillsList[0])
+  const [activeSkill, setActiveSkill] = useState<SkillNode>(matrixSkills[0])
+  const activeSkillRef = useRef<SkillNode>(matrixSkills[0])
   const [isReady, setIsReady] = useState(false)
 
   useEffect(() => {
-    selectedSkillRef.current = selectedSkill
-  }, [selectedSkill])
+    activeSkillRef.current = activeSkill
+  }, [activeSkill])
 
   useEffect(() => {
     const container = containerRef.current
@@ -57,60 +57,61 @@ export function SystemsScene() {
 
       const scene = new THREE.Scene()
       const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100)
-      camera.position.set(0, 0, 8.2)
+      camera.position.set(0, 0, 8.5)
 
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
       renderer.outputColorSpace = THREE.SRGBColorSpace
 
-      // Master 3D Skills Vault Group
-      const vaultGroup = new THREE.Group()
-      scene.add(vaultGroup)
+      // Master 3D Matrix Group
+      const matrixGroup = new THREE.Group()
+      scene.add(matrixGroup)
 
-      // 1. Sleek Cyber Globe Sphere
-      const globeGeo = new THREE.IcosahedronGeometry(2.7, 2)
-      const globeMat = new THREE.MeshStandardMaterial({
+      // 1. Central Core Reactor
+      const coreGeo = new THREE.OctahedronGeometry(0.95, 1)
+      const coreMat = new THREE.MeshStandardMaterial({
         color: 0x38bdf8,
-        emissive: 0x0284c7,
-        emissiveIntensity: 0.5,
+        emissive: 0x38bdf8,
+        emissiveIntensity: 2.8,
+        wireframe: false,
+      })
+      const centerCore = new THREE.Mesh(coreGeo, coreMat)
+      matrixGroup.add(centerCore)
+
+      // Outer Core Cage
+      const cageGeo = new THREE.IcosahedronGeometry(1.4, 1)
+      const cageMat = new THREE.MeshStandardMaterial({
+        color: 0x34d399,
+        emissive: 0x34d399,
+        emissiveIntensity: 1.2,
         wireframe: true,
         transparent: true,
-        opacity: 0.25,
+        opacity: 0.35,
       })
-      const outerGlobe = new THREE.Mesh(globeGeo, globeMat)
-      vaultGroup.add(outerGlobe)
+      const cageMesh = new THREE.Mesh(cageGeo, cageMat)
+      matrixGroup.add(cageMesh)
 
-      // 2. Fibonacci Placement for 12 Skill Nodes + 3D Text Canvas Sprites
+      // 2. Build 3D Skill Nodes & Floating 3D Text Labels
       const nodeMeshes: InstanceType<typeof THREE.Mesh>[] = []
-      const phi = Math.PI * (3 - Math.sqrt(5))
 
-      heroSkillsList.forEach((skill, i) => {
-        const y = 1 - (i / (heroSkillsList.length - 1)) * 2
-        const radiusAtY = Math.sqrt(1 - y * y)
-        const theta = phi * i
-
-        const radius = 2.7
-        const x = Math.cos(theta) * radiusAtY * radius
-        const z = Math.sin(theta) * radiusAtY * radius
-        const posY = y * radius
-
-        // 3D Hexagonal Node Mesh
-        const nodeGeo = new THREE.CylinderGeometry(0.26, 0.26, 0.14, 6)
+      matrixSkills.forEach((skill) => {
+        // Hexagonal Prism Node Geometry
+        const nodeGeo = new THREE.CylinderGeometry(0.32, 0.32, 0.16, 6)
         const nodeMat = new THREE.MeshStandardMaterial({
           color: skill.color,
           emissive: skill.color,
-          emissiveIntensity: 2.6,
-          metalness: 0.85,
-          roughness: 0.15,
+          emissiveIntensity: 2.5,
+          metalness: 0.9,
+          roughness: 0.1,
         })
 
         const mesh = new THREE.Mesh(nodeGeo, nodeMat)
-        mesh.position.set(x, posY, z)
+        mesh.position.set(...skill.pos)
         mesh.rotation.x = Math.PI / 4
         mesh.userData = skill
-        vaultGroup.add(mesh)
+        matrixGroup.add(mesh)
         nodeMeshes.push(mesh)
 
-        // 2D Text Canvas Sprite floating near node
+        // Floating 2D Canvas Text Sprite
         const textCanvas = document.createElement('canvas')
         textCanvas.width = 256
         textCanvas.height = 64
@@ -125,34 +126,24 @@ export function SystemsScene() {
         const textTexture = new THREE.CanvasTexture(textCanvas)
         const spriteMat = new THREE.SpriteMaterial({ map: textTexture, transparent: true })
         const sprite = new THREE.Sprite(spriteMat)
-        sprite.position.set(x, posY - 0.42, z)
-        sprite.scale.set(1.4, 0.35, 1)
-        vaultGroup.add(sprite)
+        sprite.position.set(skill.pos[0], skill.pos[1] - 0.45, skill.pos[2])
+        sprite.scale.set(1.5, 0.38, 1)
+        matrixGroup.add(sprite)
 
-        // Laser Conduits connecting to central core
-        const points = [new THREE.Vector3(0, 0, 0), new THREE.Vector3(x, posY, z)]
+        // Laser Beams to Core
+        const points = [new THREE.Vector3(0, 0, 0), new THREE.Vector3(...skill.pos)]
         const lineGeo = new THREE.BufferGeometry().setFromPoints(points)
         const lineMat = new THREE.LineBasicMaterial({ color: skill.color, transparent: true, opacity: 0.35 })
         const line = new THREE.Line(lineGeo, lineMat)
-        vaultGroup.add(line)
+        matrixGroup.add(line)
       })
-
-      // 3. Central Core
-      const coreGeo = new THREE.IcosahedronGeometry(0.75, 1)
-      const coreMat = new THREE.MeshStandardMaterial({
-        color: 0x38bdf8,
-        emissive: 0x38bdf8,
-        emissiveIntensity: 2.8,
-      })
-      const centerCore = new THREE.Mesh(coreGeo, coreMat)
-      vaultGroup.add(centerCore)
 
       // Lights
-      const pointLight = new THREE.PointLight(0x38bdf8, 7, 14)
-      pointLight.position.set(0, 0, 4)
+      const pointLight = new THREE.PointLight(0x38bdf8, 8, 15)
+      pointLight.position.set(0, 0, 5)
       scene.add(pointLight)
 
-      const ambientLight = new THREE.AmbientLight(0x38bdf8, 1.3)
+      const ambientLight = new THREE.AmbientLight(0x38bdf8, 1.4)
       scene.add(ambientLight)
 
       // Mouse Raycaster
@@ -187,36 +178,44 @@ export function SystemsScene() {
       const animate = (time: number) => {
         const elapsed = time * 0.001
 
-        outerGlobe.rotation.y = elapsed * 0.35
-        outerGlobe.rotation.x = Math.sin(elapsed * 0.25) * 0.15
-        centerCore.rotation.y = -elapsed * 0.8
+        // Core Rotations & Pulse
+        centerCore.rotation.y = -elapsed * 0.9
+        centerCore.rotation.x = Math.sin(elapsed * 0.5) * 0.3
+        cageMesh.rotation.y = elapsed * 0.5
+        cageMesh.rotation.z = Math.cos(elapsed * 0.4) * 0.2
 
-        vaultGroup.rotation.y += (targetRotation.y - vaultGroup.rotation.y) * 0.05
-        vaultGroup.rotation.x += (targetRotation.x - vaultGroup.rotation.x) * 0.05
+        matrixGroup.rotation.y += (targetRotation.y - matrixGroup.rotation.y) * 0.05
+        matrixGroup.rotation.x += (targetRotation.x - matrixGroup.rotation.x) * 0.05
 
-        // Raycasting logic
+        // Raycasting Logic
         raycaster.setFromCamera(mouse, camera)
         const intersects = raycaster.intersectObjects(nodeMeshes)
 
-        let hovered: SkillItem | null = null
+        let hovered: SkillNode | null = null
 
-        nodeMeshes.forEach((mesh) => {
-          const item = mesh.userData as SkillItem
+        nodeMeshes.forEach((mesh, index) => {
+          const skill = mesh.userData as SkillNode
           const isHovered = intersects.length > 0 && intersects[0].object === mesh
 
-          if (isHovered) hovered = item
+          if (isHovered) hovered = skill
 
-          const activeName = (selectedSkillRef.current as SkillItem)?.name || ''
-          const isSelected = activeName === item.name
-          const targetScale = isHovered || isSelected ? 1.45 : 1.0
+          const currentActive = (activeSkillRef.current as SkillNode)?.name || ''
+          const isSelected = currentActive === skill.name
+
+          // Hover elevation & scale
+          const targetScale = isHovered || isSelected ? 1.5 : 1.0
           mesh.scale.setScalar(mesh.scale.x + (targetScale - mesh.scale.x) * 0.1)
+
+          // Subtle float animation
+          const floatOffsetY = Math.sin(elapsed * 2 + index) * 0.08
+          mesh.position.y = skill.pos[1] + floatOffsetY
           mesh.rotation.y += 0.02
         })
 
         if (hovered) {
-          const activeName = (selectedSkillRef.current as SkillItem)?.name || ''
-          if ((hovered as SkillItem).name !== activeName) {
-            setSelectedSkill(hovered)
+          const currentActive = (activeSkillRef.current as SkillNode)?.name || ''
+          if ((hovered as SkillNode).name !== currentActive) {
+            setActiveSkill(hovered)
           }
         }
 
@@ -230,10 +229,10 @@ export function SystemsScene() {
         cancelAnimationFrame(animationFrame)
         resizeObserver.disconnect()
         container.removeEventListener('pointermove', handlePointerMove)
-        globeGeo.dispose()
-        globeMat.dispose()
         coreGeo.dispose()
         coreMat.dispose()
+        cageGeo.dispose()
+        cageMat.dispose()
         renderer.dispose()
       }
     }
@@ -249,16 +248,16 @@ export function SystemsScene() {
     <div
       ref={containerRef}
       className={`systems-scene ${isReady ? 'systems-scene--ready' : ''}`}
-      aria-label="3D Interactive Tech Skills Globe Core"
+      aria-label="3D Interactive Tech Skills Core Matrix"
     >
       <canvas ref={canvasRef} className="systems-scene__canvas" />
 
       {/* Floating Active Skill Badge Overlay */}
-      {selectedSkill ? (
+      {activeSkill ? (
         <div className="skills-3d-hud" style={{ top: 'auto', bottom: '0.8rem', right: '0.8rem' }}>
-          <span className="skills-3d-hud__cat">{selectedSkill.category}</span>
-          <strong className="skills-3d-hud__title">{selectedSkill.name}</strong>
-          <span className="skills-3d-hud__level">{selectedSkill.level}</span>
+          <span className="skills-3d-hud__cat">{activeSkill.category}</span>
+          <strong className="skills-3d-hud__title">{activeSkill.name}</strong>
+          <span className="skills-3d-hud__level">{activeSkill.level}</span>
         </div>
       ) : null}
     </div>
