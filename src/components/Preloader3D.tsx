@@ -16,8 +16,8 @@ export function Preloader3D({ onComplete }: { onComplete?: () => void }) {
   const [fadingOut, setFadingOut] = useState(false)
 
   useEffect(() => {
-    // Total duration ~2000ms (2.0 seconds) across 25 ticks of 80ms
-    const totalTicks = 25
+    // Fast snappy duration ~1000ms (1.0 second) across 20 ticks of 50ms
+    const totalTicks = 20
     let currentTick = 0
 
     const interval = setInterval(() => {
@@ -34,10 +34,10 @@ export function Preloader3D({ onComplete }: { onComplete?: () => void }) {
           setFadingOut(true)
           setTimeout(() => {
             onComplete?.()
-          }, 450)
-        }, 150)
+          }, 350)
+        }, 100)
       }
-    }, 80)
+    }, 50)
 
     return () => clearInterval(interval)
   }, [onComplete])
