@@ -10,41 +10,26 @@ interface SkillNode {
   pos: [number, number, number]
 }
 
-const allHeroSkills: SkillNode[] = [
-  // Ring 1: Primary Core Stack
-  { name: 'Node.js', category: 'Backend Runtime', level: 'Production REST & Auth APIs', color: 0x38bdf8, colorHex: '#38bdf8', iconSymbol: '⬢', pos: [-2.6, 2.0, 0.4] },
-  { name: 'Go (Golang)', category: 'High-Concurrency Core', level: 'Gin Microservices & Pipelines', color: 0x34d399, colorHex: '#34d399', iconSymbol: '🦫', pos: [2.6, 2.0, 0.4] },
-  { name: 'TypeScript', category: 'Language Tier', level: 'Strict Enterprise Schemas', color: 0x38bdf8, colorHex: '#38bdf8', iconSymbol: 'TS', pos: [-3.4, 0.5, 0.2] },
-  { name: 'PostgreSQL', category: 'Relational DB', level: 'ACID & Multi-Tenant RBAC', color: 0xc084fc, colorHex: '#c084fc', iconSymbol: '🐘', pos: [3.4, 0.5, 0.2] },
-  { name: 'MongoDB', category: 'Document Store', level: 'Workspace Query Abstraction', color: 0x34d399, colorHex: '#34d399', iconSymbol: '🍃', pos: [-2.6, -1.0, 0.4] },
-  { name: 'AWS Cloud', category: 'Cloud Infrastructure', level: 'SQS, Lambda, S3, EC2 Pipelines', color: 0x38bdf8, colorHex: '#38bdf8', iconSymbol: '☁', pos: [2.6, -1.0, 0.4] },
-
-  // Ring 2: Real-time & Messaging & DevOps
-  { name: 'WebSockets', category: 'Real-Time Tier', level: 'Sub-100ms Streaming & Sync', color: 0xc084fc, colorHex: '#c084fc', iconSymbol: '⚡', pos: [-1.4, 2.7, -0.6] },
-  { name: 'Docker', category: 'DevOps & Containers', level: 'Container Orchestration', color: 0x38bdf8, colorHex: '#38bdf8', iconSymbol: '🐳', pos: [1.4, 2.7, -0.6] },
-  { name: 'Redis', category: 'In-Memory Cache', level: 'Pub/Sub & Session Caching', color: 0x34d399, colorHex: '#34d399', iconSymbol: '🔴', pos: [-3.4, -2.0, -0.3] },
-  { name: 'AWS SQS', category: 'Async Queues', level: 'Serverless Message Pipelines', color: 0x38bdf8, colorHex: '#38bdf8', iconSymbol: '📩', pos: [3.4, -2.0, -0.3] },
-
-  // Ring 3: Frameworks & Frontend & Tooling
-  { name: 'React 18', category: 'Frontend UI', level: 'Concurrent Mode & Hooks', color: 0x34d399, colorHex: '#34d399', iconSymbol: '⚛', pos: [-1.5, -2.4, 0.4] },
-  { name: 'Next.js', category: 'Full Stack Framework', level: 'App Router & Server Actions', color: 0xc084fc, colorHex: '#c084fc', iconSymbol: '▲', pos: [1.5, -2.4, 0.4] },
-  { name: 'Python', category: 'Scripting', level: 'Automation & Data Pipelines', color: 0x38bdf8, colorHex: '#38bdf8', iconSymbol: '🐍', pos: [-0.1, 3.1, -1.0] },
-  { name: 'GraphQL', category: 'API Protocol', level: 'Typed Query & Subscriptions', color: 0xc084fc, colorHex: '#c084fc', iconSymbol: '◈', pos: [-0.1, -3.1, -1.0] },
-
-  // Outer Array: Developer Ecosystem
-  { name: 'Gin Framework', category: 'Go Web Framework', level: 'High-Throughput Microservices', color: 0x34d399, colorHex: '#34d399', iconSymbol: '🍸', pos: [-1.8, 1.1, -1.5] },
-  { name: 'Express.js', category: 'Node Framework', level: 'REST APIs & Middleware', color: 0x38bdf8, colorHex: '#38bdf8', iconSymbol: '🚂', pos: [1.8, 1.1, -1.5] },
-  { name: 'Linux / Bash', category: 'OS & Shell', level: 'Server Administration', color: 0x34d399, colorHex: '#34d399', iconSymbol: '🐧', pos: [-1.8, -0.8, -1.5] },
-  { name: 'Git & GitHub', category: 'Version Control', level: 'CI/CD & Open Source', color: 0x38bdf8, colorHex: '#38bdf8', iconSymbol: '🐙', pos: [1.8, -0.8, -1.5] },
-  { name: 'CI/CD Actions', category: 'Automation', level: 'Automated Build & Deploy', color: 0xc084fc, colorHex: '#c084fc', iconSymbol: '🔄', pos: [0, 0, -2.2] },
-  { name: 'Tailwind CSS', category: 'Styling Tier', level: 'Cyberpunk Responsive UI', color: 0x38bdf8, colorHex: '#38bdf8', iconSymbol: '🎨', pos: [0, 0, 2.2] },
+const heroCoreSkills: SkillNode[] = [
+  { name: 'Node.js', category: 'Backend Tier', level: 'Production REST & Auth APIs', color: 0x38bdf8, colorHex: '#38bdf8', iconSymbol: '⬢', pos: [-2.4, 1.7, 0.4] },
+  { name: 'Go (Golang)', category: 'High-Concurrency Core', level: 'Gin Microservices & Pipelines', color: 0x34d399, colorHex: '#34d399', iconSymbol: '🦫', pos: [2.4, 1.7, 0.4] },
+  { name: 'TypeScript', category: 'Language Tier', level: 'Strict Enterprise Schemas', color: 0x38bdf8, colorHex: '#38bdf8', iconSymbol: 'TS', pos: [-3.2, 0.1, 0.2] },
+  { name: 'PostgreSQL', category: 'Relational DB', level: 'ACID & Multi-Tenant RBAC', color: 0xc084fc, colorHex: '#c084fc', iconSymbol: '🐘', pos: [3.2, 0.1, 0.2] },
+  { name: 'MongoDB', category: 'Document Store', level: 'Workspace Query Abstraction', color: 0x34d399, colorHex: '#34d399', iconSymbol: '🍃', pos: [-2.4, -1.6, 0.4] },
+  { name: 'AWS Cloud', category: 'Cloud Pipeline', level: 'SQS Queues & Lambda Triggers', color: 0x38bdf8, colorHex: '#38bdf8', iconSymbol: '☁', pos: [2.4, -1.6, 0.4] },
+  { name: 'Docker', category: 'DevOps', level: 'Container Orchestration', color: 0x38bdf8, colorHex: '#38bdf8', iconSymbol: '🐳', pos: [0, 2.6, -0.6] },
+  { name: 'WebSockets', category: 'Real-Time Tier', level: 'Sub-100ms Streaming & Sync', color: 0xc084fc, colorHex: '#c084fc', iconSymbol: '⚡', pos: [0, -2.6, -0.6] },
+  { name: 'Python', category: 'Scripting', level: 'Automation & Data Pipelines', color: 0x38bdf8, colorHex: '#38bdf8', iconSymbol: '🐍', pos: [-1.4, 0.9, -1.2] },
+  { name: 'Redis', category: 'In-Memory Cache', level: 'Pub/Sub & Session Storage', color: 0x34d399, colorHex: '#34d399', iconSymbol: '🔴', pos: [1.4, 0.9, -1.2] },
+  { name: 'React 18', category: 'Frontend UI', level: 'Concurrent Mode Components', color: 0x34d399, colorHex: '#34d399', iconSymbol: '⚛', pos: [-1.4, -0.9, -1.2] },
+  { name: 'Next.js', category: 'Full Stack UI', level: 'App Router & Server Actions', color: 0xc084fc, colorHex: '#c084fc', iconSymbol: '▲', pos: [1.4, -0.9, -1.2] },
 ]
 
 export function SystemsScene() {
   const containerRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const [activeSkill, setActiveSkill] = useState<SkillNode>(allHeroSkills[0])
-  const activeSkillRef = useRef<SkillNode>(allHeroSkills[0])
+  const [activeSkill, setActiveSkill] = useState<SkillNode>(heroCoreSkills[0])
+  const activeSkillRef = useRef<SkillNode>(heroCoreSkills[0])
   const [isReady, setIsReady] = useState(false)
 
   useEffect(() => {
@@ -74,7 +59,7 @@ export function SystemsScene() {
 
       const scene = new THREE.Scene()
       const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100)
-      camera.position.set(0, 0, 9.2)
+      camera.position.set(0, 0, 8.6)
 
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
       renderer.outputColorSpace = THREE.SRGBColorSpace
@@ -94,59 +79,62 @@ export function SystemsScene() {
       coreGroup.add(centerCore)
 
       // Wireframe Outer Reactor Cage
-      const cageGeo = new THREE.IcosahedronGeometry(1.5, 1)
+      const cageGeo = new THREE.IcosahedronGeometry(1.45, 1)
       const cageMat = new THREE.MeshStandardMaterial({
         color: 0x34d399,
         emissive: 0x34d399,
         emissiveIntensity: 1.2,
         wireframe: true,
         transparent: true,
-        opacity: 0.32,
+        opacity: 0.35,
       })
       const cageMesh = new THREE.Mesh(cageGeo, cageMat)
       coreGroup.add(cageMesh)
 
-      // 2. Build All 20 Floating 3D Logo Sprites
+      // 2. Build Floating 3D Logo Sprites
       const spriteNodes: InstanceType<typeof THREE.Sprite>[] = []
 
-      allHeroSkills.forEach((skill) => {
+      heroCoreSkills.forEach((skill) => {
+        // Glassmorphic 3D Logo Canvas Badge
         const textCanvas = document.createElement('canvas')
-        textCanvas.width = 300
-        textCanvas.height = 70
+        textCanvas.width = 320
+        textCanvas.height = 76
         const ctx = textCanvas.getContext('2d')
         if (ctx) {
+          // Draw dark glass rounded background badge
           ctx.fillStyle = 'rgba(8, 14, 24, 0.92)'
           ctx.strokeStyle = skill.colorHex
           ctx.lineWidth = 2
           ctx.beginPath()
-          ctx.roundRect(8, 8, 284, 54, 8)
+          ctx.roundRect(10, 10, 300, 56, 10)
           ctx.fill()
           ctx.stroke()
 
+          // Draw Logo Icon Symbol + Text Label
           ctx.fillStyle = skill.colorHex
-          ctx.font = 'bold 20px DM Mono, monospace'
+          ctx.font = 'bold 22px DM Mono, monospace'
           ctx.textAlign = 'left'
           ctx.textBaseline = 'middle'
-          ctx.fillText(skill.iconSymbol, 22, 35)
+          ctx.fillText(skill.iconSymbol, 26, 38)
 
           ctx.fillStyle = '#ffffff'
-          ctx.font = 'bold 17px DM Mono, monospace'
-          ctx.fillText(skill.name, 60, 35)
+          ctx.font = 'bold 19px DM Mono, monospace'
+          ctx.fillText(skill.name, 68, 38)
         }
 
         const textTexture = new THREE.CanvasTexture(textCanvas)
         const spriteMat = new THREE.SpriteMaterial({ map: textTexture, transparent: true })
         const sprite = new THREE.Sprite(spriteMat)
         sprite.position.set(...skill.pos)
-        sprite.scale.set(1.7, 0.42, 1)
+        sprite.scale.set(1.9, 0.46, 1)
         sprite.userData = skill
         coreGroup.add(sprite)
         spriteNodes.push(sprite)
 
-        // Laser Conduit Beam to Core
+        // Laser Conduit Beam to Reactor Core
         const points = [new THREE.Vector3(0, 0, 0), new THREE.Vector3(...skill.pos)]
         const lineGeo = new THREE.BufferGeometry().setFromPoints(points)
-        const lineMat = new THREE.LineBasicMaterial({ color: skill.color, transparent: true, opacity: 0.3 })
+        const lineMat = new THREE.LineBasicMaterial({ color: skill.color, transparent: true, opacity: 0.38 })
         const line = new THREE.Line(lineGeo, lineMat)
         coreGroup.add(line)
       })
@@ -191,6 +179,7 @@ export function SystemsScene() {
       const animate = (time: number) => {
         const elapsed = time * 0.001
 
+        // Reactor Core Rotations
         centerCore.rotation.y = -elapsed * 0.9
         centerCore.rotation.x = Math.sin(elapsed * 0.5) * 0.3
         cageMesh.rotation.y = elapsed * 0.5
@@ -199,7 +188,7 @@ export function SystemsScene() {
         coreGroup.rotation.y += (targetRotation.y - coreGroup.rotation.y) * 0.05
         coreGroup.rotation.x += (targetRotation.x - coreGroup.rotation.x) * 0.05
 
-        // Raycasting Logic
+        // Raycasting Logic directly on 3D Logo Sprites
         raycaster.setFromCamera(mouse, camera)
         const intersects = raycaster.intersectObjects(spriteNodes)
 
@@ -214,12 +203,13 @@ export function SystemsScene() {
           const activeName = (activeSkillRef.current as SkillNode)?.name || ''
           const isSelected = activeName === skill.name
 
-          const targetScaleX = isHovered || isSelected ? 2.1 : 1.7
-          const targetScaleY = isHovered || isSelected ? 0.52 : 0.42
+          const targetScaleX = isHovered || isSelected ? 2.3 : 1.9
+          const targetScaleY = isHovered || isSelected ? 0.56 : 0.46
           sprite.scale.x += (targetScaleX - sprite.scale.x) * 0.1
           sprite.scale.y += (targetScaleY - sprite.scale.y) * 0.1
 
-          const floatOffset = Math.sin(elapsed * 2 + index) * 0.05
+          // Floating animation
+          const floatOffset = Math.sin(elapsed * 2 + index) * 0.06
           sprite.position.y = skill.pos[1] + floatOffset
         })
 
@@ -259,7 +249,7 @@ export function SystemsScene() {
     <div
       ref={containerRef}
       className={`systems-scene ${isReady ? 'systems-scene--ready' : ''}`}
-      aria-label="3D Cybernetic Full Tech Skills Matrix"
+      aria-label="3D Cybernetic Tech Core Matrix"
     >
       <canvas ref={canvasRef} className="systems-scene__canvas" />
 
