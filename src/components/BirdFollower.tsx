@@ -3,14 +3,15 @@ import { useEffect, useRef, useState } from 'react'
 export function BirdFollower() {
   const [pos, setPos] = useState({ x: -100, y: -100 })
   const [direction, setDirection] = useState<'left' | 'right'>('right')
-  const [isFlying, setIsFlying] = useState(false)
-  const [isPerched, setIsPerched] = useState(false)
+  const [isRoamMode, setIsRoamMode] = useState(false)
   const [flapPhase, setFlapPhase] = useState(0)
   const [chirpText, setChirpText] = useState<string | null>(null)
   const [chirpCount, setChirpCount] = useState(0)
 
   const mouseRef = useRef({ x: -100, y: -100 })
   const birdRef = useRef({ x: -100, y: -100 })
+  const roamOffsetRef = useRef({ x: 0, y: 0 })
+  const roamAngleRef = useRef<number>(0)
   const animationFrameRef = useRef<number>(0)
   const idleTimeoutRef = useRef<number | null>(null)
   const flapTimeRef = useRef<number>(0)
@@ -18,41 +19,47 @@ export function BirdFollower() {
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       mouseRef.current = { x: e.clientX, y: e.clientY }
-      setIsPerched(false)
-      setIsFlying(true)
+      setIsRoamMode(false)
 
       if (idleTimeoutRef.current) clearTimeout(idleTimeoutRef.current)
       idleTimeoutRef.current = window.setTimeout(() => {
-        setIsFlying(false)
-        setIsPerched(true)
-      }, 700)
+        setIsRoamMode(true)
+      }, 600)
     }
 
     window.addEventListener('mousemove', handleMouseMove, { passive: true })
 
     const animate = () => {
-      const targetX = mouseRef.current.x + 28
-      const targetY = mouseRef.current.y - 28 // Flies slightly above cursor
+      flapTimeRef.current += 0.22
+      setFlapPhase(flapTimeRef.current)
+
+      let targetX = mouseRef.current.x + 28
+      let targetY = mouseRef.current.y - 28
+
+      if (isRoamMode) {
+        // Orbital roaming physics around cursor when idle
+        roamAngleRef.current += 0.035
+        const roamRadius = 38
+        const roamDx = Math.cos(roamAngleRef.current) * roamRadius
+        const roamDy = Math.sin(roamAngleRef.current * 1.5) * (roamRadius * 0.6)
+
+        targetX = mouseRef.current.x + roamDx
+        targetY = mouseRef.current.y - 25 + roamDy
+      }
 
       const dx = targetX - birdRef.current.x
       const dy = targetY - birdRef.current.y
       const dist = Math.hypot(dx, dy)
 
-      if (dist > 3) {
-        if (dx < -2) setDirection('left')
-        else if (dx > 2) setDirection('right')
+      if (dist > 1.5) {
+        if (dx < -1.5) setDirection('left')
+        else if (dx > 1.5) setDirection('right')
 
-        // Gentle, smooth flight follow speed
-        birdRef.current.x += dx * 0.065
-        birdRef.current.y += dy * 0.065
-
-        // Wing flap phase angle
-        flapTimeRef.current += 0.24
-        setFlapPhase(flapTimeRef.current)
+        const speed = isRoamMode ? 0.045 : 0.075
+        birdRef.current.x += dx * speed
+        birdRef.current.y += dy * speed
 
         setPos({ x: birdRef.current.x, y: birdRef.current.y })
-      } else {
-        setPos({ x: targetX, y: targetY })
       }
 
       animationFrameRef.current = requestAnimationFrame(animate)
@@ -65,10 +72,10 @@ export function BirdFollower() {
       cancelAnimationFrame(animationFrameRef.current)
       if (idleTimeoutRef.current) clearTimeout(idleTimeoutRef.current)
     }
-  }, [])
+  }, [isRoamMode])
 
   const handleBirdClick = () => {
-    const chirps = ['Chirp Chirp! 🐤', 'Perched & Peaceful 🍃', 'Cyber Bird Online! 🕊️', '❤️ Resting!']
+    const chirps = ['Chirp Chirp! 🐤', 'Exploring Sky! ☁️', 'Cyber Bird Online! 🕊️', '❤️ Roaming Free!']
     const nextChirp = chirps[chirpCount % chirps.length]
     setChirpCount((c) => c + 1)
     setChirpText(nextChirp)
@@ -77,9 +84,9 @@ export function BirdFollower() {
 
   if (pos.x < 0 || pos.y < 0) return null
 
-  // Calculate wing flap rotation angle in degrees (0 deg when perched flat!)
-  const wingAngle = isFlying ? Math.sin(flapPhase * 2.5) * 38 : isPerched ? 0 : Math.sin(flapPhase) * 6
-  const floatBob = isFlying ? Math.sin(Date.now() * 0.005) * -3 : isPerched ? 0 : Math.sin(Date.now() * 0.002) * -1
+  // Wing flap animation
+  const wingAngle = Math.sin(flapPhase * 2.2) * (isRoamMode ? 28 : 38)
+  const floatBob = Math.sin(Date.now() * 0.004) * -3
 
   return (
     <div
@@ -91,7 +98,6 @@ export function BirdFollower() {
         transform: `translate(-50%, -50%) scaleX(${direction === 'left' ? -1 : 1})`,
         zIndex: 9999,
         pointerEvents: 'none',
-        transition: isPerched ? 'transform 0.2s ease, left 0.1s ease, top 0.1s ease' : 'none',
       }}
     >
       {/* Chirp Speech Bubble */}
@@ -119,7 +125,7 @@ export function BirdFollower() {
         </div>
       ) : null}
 
-      {/* SVG Animated Flying / Perched Bird */}
+      {/* SVG Animated Flying / Roaming Bird */}
       <div
         onClick={handleBirdClick}
         style={{
@@ -127,12 +133,12 @@ export function BirdFollower() {
           height: '38px',
           cursor: 'pointer',
           pointerEvents: 'auto',
-          filter: isPerched
-            ? 'drop-shadow(0 2px 6px rgba(56, 189, 248, 0.25))'
+          filter: isRoamMode
+            ? 'drop-shadow(0 0 10px rgba(56, 189, 248, 0.5))'
             : 'drop-shadow(0 4px 12px rgba(56, 189, 248, 0.4))',
           transition: 'filter 0.3s ease',
         }}
-        title={isPerched ? 'Cyber Bird — Perched peacefully! Click to chirp.' : 'Cyber Bird Companion — Flying!'}
+        title={isRoamMode ? 'Cyber Bird — Roaming freely! Click to chirp.' : 'Cyber Bird Companion — Following cursor!'}
       >
         <svg
           viewBox="0 0 64 52"
@@ -154,7 +160,6 @@ export function BirdFollower() {
             style={{
               transformOrigin: '26px 24px',
               transform: `rotate(${-wingAngle}deg)`,
-              transition: isPerched ? 'transform 0.3s ease' : 'none',
             }}
           />
 
@@ -162,14 +167,13 @@ export function BirdFollower() {
           <path d="M10 26C10 18 20 14 34 16C46 18 52 24 50 32C46 40 28 42 18 36C12 32 10 28 10 26Z" fill="#38bdf8" />
           <path d="M16 26C18 32 28 36 38 34C44 32 46 28 42 26C32 24 22 24 16 26Z" fill="#34d399" opacity="0.8" />
 
-          {/* Front Flapping / Folded Wing */}
+          {/* Front Flapping Wing */}
           <path
             d="M28 26C24 8 36 -2 46 2C40 14 32 22 28 26Z"
             fill="#34d399"
             style={{
               transformOrigin: '28px 26px',
               transform: `rotate(${wingAngle}deg)`,
-              transition: isPerched ? 'transform 0.3s ease' : 'none',
             }}
           />
 
@@ -182,14 +186,6 @@ export function BirdFollower() {
 
           {/* Beak */}
           <path d="M56 20L64 23L56 26Z" fill="#fbbf24" />
-
-          {/* Perched Little Feet (visible when idle/perched) */}
-          {isPerched ? (
-            <g>
-              <path d="M28 38V44" stroke="#fbbf24" strokeWidth="2" strokeLinecap="round" />
-              <path d="M34 38V44" stroke="#fbbf24" strokeWidth="2" strokeLinecap="round" />
-            </g>
-          ) : null}
         </svg>
       </div>
     </div>
