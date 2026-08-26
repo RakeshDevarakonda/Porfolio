@@ -31,10 +31,10 @@ import {
   Zap,
 } from 'lucide-react'
 import { About3DViewer } from './components/About3DViewer'
+import { ArchitectureEngine } from './components/ArchitectureEngine'
 import { GithubIcon, LinkedinIcon } from './components/BrandIcons'
 import { CursorFollower } from './components/CursorFollower'
 import { Full3DWorld } from './components/Full3DWorld'
-import { InteractiveSkills3D } from './components/InteractiveSkills3D'
 import { InteractiveTerminal } from './components/InteractiveTerminal'
 import { Preloader3D } from './components/Preloader3D'
 import { Reveal } from './components/Reveal'
@@ -43,17 +43,18 @@ import { SystemsScene } from './components/SystemsScene'
 import { TiltCard3D } from './components/TiltCard3D'
 import { ToastContainer, ToastMessage } from './components/Toast'
 import { Typewriter } from './components/Typewriter'
-import { achievements, education, experience, experienceHighlights, focusAreas, profile, skillGroups } from './data/profile'
+import { WhatILikeBuilding } from './components/WhatILikeBuilding'
+import { achievements, education, experience, experienceHighlights, focusAreas, profile } from './data/profile'
 import { ProjectCategory, projects } from './data/projects'
 
 const navItems = [
-  ['About', 'about'],
-  ['Skills', 'skills'],
-  ['Experience', 'experience'],
-  ['Projects', 'projects'],
-  ['Open Source', 'opensource'],
-  ['Education', 'education'],
-  ['Contact', 'contact'],
+  ['HOME', 'top'],
+  ['ABOUT', 'about'],
+  ['EXPERIENCE', 'experience'],
+  ['ARCHITECTURE', 'architecture'],
+  ['PROJECTS', 'projects'],
+  ['OPEN SOURCE', 'opensource'],
+  ['CONTACT', 'contact'],
 ] as const
 
 const projectCategoryTabs: { label: string; value: ProjectCategory }[] = [
@@ -64,7 +65,6 @@ const projectCategoryTabs: { label: string; value: ProjectCategory }[] = [
   { label: 'Real-Time', value: 'realtime' },
 ]
 
-const skillIcons = [Code2, Layers3, Server, Database, Cloud, TestTube2]
 const focusIcons = [ShieldCheck, Zap, Activity]
 
 const aboutPillars = [
@@ -187,8 +187,8 @@ function App() {
 
       <header className="site-header">
         <a className="brand" href="#top" aria-label="Back to top">
-          <span className="brand-mark">&gt;_</span>
-          <span>DR</span>
+          <span className="brand-mark">RD</span>
+          <span>COMMAND CENTER</span>
         </a>
 
         <nav className={`main-nav ${mobileOpen ? 'is-open' : ''}`} aria-label="Primary navigation">
@@ -205,6 +205,10 @@ function App() {
         </nav>
 
         <div className="header-actions">
+          <div className="status-badge" style={{ margin: 0 }}>
+            <span className="status-dot" />
+            <span>SYSTEM ONLINE</span>
+          </div>
           <button
             className="menu-toggle"
             onClick={() => setMobileOpen((open) => !open)}
@@ -222,58 +226,48 @@ function App() {
             <Reveal>
               <div className="status-badge">
                 <span className="status-dot" />
-                <span>Available for Full Stack & Backend Roles</span>
+                <span>SYSTEM ONLINE // ARCHITECTURE STACK OPERATIONAL</span>
               </div>
 
               <h1 id="hero-title">
-                {profile.displayName.split(' ').map((part) => (
-                  <span key={part}>{part}</span>
-                ))}
+                <span>DEVARAKONDA RAKESH</span>
               </h1>
 
               <p className="hero-title">
                 <Typewriter
-                  words={['Full Stack Developer', 'Backend Engineer', 'Go & Node.js Architect', 'Open Source Creator']}
+                  words={['Full Stack Developer | Backend Engineer', 'Go & Node.js Architect', 'Event-Driven Infrastructure', 'Open Source Creator']}
                 />
               </p>
 
-              <p className="hero-current">
-                <BriefcaseBusiness size={14} /> Backend Developer <span>at</span> Narrative Intelligence Private Limited
-              </p>
+              <h2 className="hero-central-motto">I build systems that scale.</h2>
 
               <p className="hero-summary">
-                {profile.summary} Comfortable across RBAC-driven security design, real-time WebSocket infrastructure, and AWS cloud pipelines.
+                Event-driven backends. Real-time infrastructure. Cloud-native systems. Comfortable across RBAC-driven security design, sub-100ms WebSocket streaming, and AWS cloud pipelines.
               </p>
+
+              <div className="hero-boot-string">
+                <code>&gt; initializing developer_profile... &gt; loading backend_modules... &gt; connecting cloud_infrastructure... &gt; system.status = operational</code>
+              </div>
 
               <div className="hero-actions">
                 <a
                   className="button button--primary"
+                  href="#projects"
+                >
+                  <Sparkles size={16} /> ENTER THE SYSTEM <ArrowUpRight size={15} />
+                </a>
+                <a
+                  className="button button--ghost"
+                  href="#experience"
+                >
+                  <BriefcaseBusiness size={15} /> VIEW MY WORK
+                </a>
+                <a
+                  className="button"
                   href={profile.links.resume}
                   download
                 >
-                  <FileText size={16} /> Resume <ArrowUpRight size={15} />
-                </a>
-                <button
-                  className="button button--ghost"
-                  onClick={handleCopyEmail}
-                >
-                  <Copy size={15} /> Copy Email
-                </button>
-                <a
-                  className="button"
-                  href={profile.links.github}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <GithubIcon width={16} height={16} /> GitHub
-                </a>
-                <a
-                  className="button"
-                  href={profile.links.linkedin}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <LinkedinIcon width={16} height={16} /> LinkedIn
+                  <FileText size={15} /> RESUME PDF
                 </a>
               </div>
 
@@ -293,7 +287,7 @@ function App() {
               </div>
 
               <a className="scroll-cue" href="#about">
-                <span>Scroll to explore</span>
+                <span>Scroll to enter system</span>
                 <ArrowDown size={15} />
               </a>
             </Reveal>
@@ -303,8 +297,8 @@ function App() {
             <div className="hero-grid-glow" aria-hidden="true" />
             <SystemsScene />
             <div className="hero-visual-caption">
-              <span>INTERACTIVE 3D SYSTEM CORE</span>
-              <span>THREE.JS / RAYCASTING TILT</span>
+              <span>INTERACTIVE 3D TECH GLOBE</span>
+              <span>THREE.JS ENGINE</span>
             </div>
           </Reveal>
         </section>
@@ -349,19 +343,18 @@ function App() {
         <section id="about" className="section section--bordered" aria-labelledby="about-title">
           <div className="content-grid content-grid--about-upgraded">
             <Reveal>
-              <SectionHeading index="01" title="About me" description="Engineering philosophy, backend architecture, and practical full-stack builds." />
+              <SectionHeading index="01" title="THE ENGINEER BEHIND THE SYSTEM" description="Not just writing code. Designing systems." />
             </Reveal>
 
             <div className="about-main-layout">
-              {/* 3D Identity Core Viewer */}
+              {/* User Professional Portrait Photo Card */}
               <Reveal className="about-3d-box" delay={50}>
                 <About3DViewer />
-                <div className="about-3d-caption">3D IDENTITY CORE · HYDERABAD, INDIA</div>
               </Reveal>
 
               <Reveal className="about-copy-upgraded" delay={90}>
                 <p className="lead">
-                  Backend-focused full-stack developer based in Hyderabad, India. I specialize in building secure, event-driven, and real-time software systems.
+                  Rakesh is a backend-focused Full Stack Developer with production experience building event-driven, multi-tenant systems using Node.js, Go, and React.
                 </p>
                 {profile.about.map((paragraph) => (
                   <p key={paragraph}>{paragraph}</p>
@@ -369,12 +362,24 @@ function App() {
               </Reveal>
             </div>
 
+            {/* Core Engineering Profile Stats Card */}
+            <Reveal className="profile-stats-card-wrapper" delay={140}>
+              <TiltCard3D className="profile-stats-card">
+                <div className="profile-stat-cell"><span>ROLE</span><strong>Backend / Full Stack Developer</strong></div>
+                <div className="profile-stat-cell"><span>LOCATION</span><strong>Hyderabad, India</strong></div>
+                <div className="profile-stat-cell"><span>CORE</span><strong>Node.js + Go</strong></div>
+                <div className="profile-stat-cell"><span>FRONTEND</span><strong>React / Next.js</strong></div>
+                <div className="profile-stat-cell"><span>CLOUD</span><strong>AWS</strong></div>
+                <div className="profile-stat-cell"><span>SPECIALIZATION</span><strong>Real-Time & Distributed Systems</strong></div>
+              </TiltCard3D>
+            </Reveal>
+
             {/* Core Engineering Pillars */}
             <div className="about-pillars-grid">
               {aboutPillars.map((pillar, idx) => {
                 const Icon = pillar.icon
                 return (
-                  <Reveal className="about-pillar-wrapper" delay={120 + idx * 50} key={pillar.title}>
+                  <Reveal className="about-pillar-wrapper" delay={180 + idx * 50} key={pillar.title}>
                     <TiltCard3D className={`about-pillar-card about-pillar-card--${pillar.accent}`}>
                       <div className="about-pillar-icon"><Icon size={20} /></div>
                       <h3>{pillar.title}</h3>
@@ -386,7 +391,7 @@ function App() {
             </div>
 
             {/* Executable ZSH Interactive Terminal */}
-            <Reveal className="terminal-section-wrapper" delay={200}>
+            <Reveal className="terminal-section-wrapper" delay={240}>
               <TiltCard3D className="terminal-card">
                 <InteractiveTerminal />
               </TiltCard3D>
@@ -394,46 +399,10 @@ function App() {
           </div>
         </section>
 
-        <section id="skills" className="section section--bordered" aria-labelledby="skills-title">
-          <div className="content-grid content-grid--skills">
-            <Reveal>
-              <SectionHeading index="02" title="Skills" description="A practical stack shaped by production work and independent projects." />
-            </Reveal>
-
-            <div className="skills-3d-layout">
-              {/* Interactive 3D Fibonacci Skill Matrix Sphere */}
-              <Reveal className="skills-3d-visual" delay={40}>
-                <InteractiveSkills3D />
-              </Reveal>
-
-              <div className="skills-matrix">
-                {skillGroups.map((group, index) => {
-                  const Icon = skillIcons[index]
-                  return (
-                    <Reveal className="skill-group-wrapper" delay={index * 40} key={group.label}>
-                      <TiltCard3D className="skill-group">
-                        <div className="skill-group__title">
-                          <Icon size={16} />
-                          <span>{group.label}</span>
-                        </div>
-                        <div className="skill-list">
-                          {group.items.map((item) => (
-                            <span key={item} className="skill-pill">{item}</span>
-                          ))}
-                        </div>
-                      </TiltCard3D>
-                    </Reveal>
-                  )
-                })}
-              </div>
-            </div>
-          </div>
-        </section>
-
         <section id="experience" className="section section--bordered" aria-labelledby="experience-title">
           <div className="content-grid content-grid--experience">
             <Reveal>
-              <SectionHeading index="03" title="Experience" description="Production systems, from access control to event-driven infrastructure." />
+              <SectionHeading index="02" title="MISSION CONTROL" description="Production systems I've worked on at Narrative Intelligence Private Limited." />
             </Reveal>
             <div className="experience-stack">
               <Reveal className="impact-grid" delay={70}>
@@ -473,10 +442,17 @@ function App() {
           </div>
         </section>
 
+        {/* Section 11: Architecture - The Engine */}
+        <section id="architecture" className="section section--bordered">
+          <Reveal>
+            <ArchitectureEngine />
+          </Reveal>
+        </section>
+
         <section id="projects" className="section section--bordered" aria-labelledby="projects-title">
           <div className="content-grid content-grid--projects">
             <Reveal>
-              <SectionHeading index="04" title="Selected projects" description="Real repositories spanning APIs, data layers, content systems, and real-time products." />
+              <SectionHeading index="04" title="PROJECT ARMORY" description="Systems I've built outside the mission." />
             </Reveal>
             <div className="project-showcase">
 
@@ -506,7 +482,7 @@ function App() {
                         </div>
                         <div className="project-heading">
                           <h3>{project.name}</h3>
-                          {project.featured ? <span className="project-featured">Featured</span> : null}
+                          {project.featured ? <span className="project-featured">Featured · 1,000+ Downloads</span> : null}
                         </div>
                         <p>{project.description}</p>
                         <p className="project-card__details">{project.details}</p>
@@ -557,18 +533,25 @@ function App() {
           </div>
         </section>
 
+        {/* Section 19: What I Like Building */}
+        <section className="section section--bordered">
+          <Reveal>
+            <WhatILikeBuilding />
+          </Reveal>
+        </section>
+
         <section id="opensource" className="section section--bordered" aria-labelledby="opensource-title">
           <div className="content-grid content-grid--opensource">
             <Reveal>
-              <SectionHeading index="05" title="GitHub / open source" description="I like making the work visible: readable APIs, practical tools, and public experiments." />
+              <SectionHeading index="05" title="OPEN SOURCE PROTOCOL" description="Built not only to solve my own problems, but to make other developers' lives easier." />
             </Reveal>
             <Reveal className="github-panel-wrapper" delay={100}>
               <TiltCard3D className="github-panel">
                 <div className="github-panel__copy">
                   <div className="github-panel__icon"><GithubIcon width={22} height={22} /></div>
                   <div>
-                    <h3>Public by default</h3>
-                    <p>Explore the repositories behind the work, including the published Mongo-DataLayer package and backend systems built with Go, Node.js, and PostgreSQL.</p>
+                    <h3>Mongo-DataLayer — 1,000+ Downloads</h3>
+                    <p>A zero-boilerplate MongoDB data abstraction layer with singleton connections, CRUD, cursor pagination, and audit log tracking.</p>
                   </div>
                   <a
                     className="text-link"
@@ -649,7 +632,7 @@ function App() {
         <section id="contact" className="section section--contact section--bordered" aria-labelledby="contact-title">
           <div className="content-grid content-grid--contact">
             <Reveal>
-              <SectionHeading index="08" title="Let’s connect" description="Have a backend problem to untangle or a product to build? Send a note." />
+              <SectionHeading index="08" title="BUILD SOMETHING WORTH SCALING" description="Have a difficult backend problem, a product idea, or a system that needs to scale? Send a note." />
             </Reveal>
             <Reveal className="contact-layout" delay={100}>
               <div className="contact-details">
@@ -703,7 +686,7 @@ function App() {
                     className="button button--primary"
                     type="submit"
                   >
-                    <Send size={15} /> Send message
+                    <Send size={15} /> LET'S BUILD IT
                   </button>
                 </div>
               </form>
@@ -713,11 +696,17 @@ function App() {
       </main>
 
       <footer className="site-footer">
-        <span>© {new Date().getFullYear()} Devarakonda Rakesh</span>
-        <span>Built with React + TypeScript + Three.js</span>
-        <a href="#top">
-          Back to top <ArrowUpRight size={14} />
-        </a>
+        <div>
+          <strong>DEVARAKONDA RAKESH</strong>
+          <span style={{ display: 'block', fontSize: '0.62rem', color: 'var(--text-muted)' }}>Full Stack Developer | Backend Engineer</span>
+        </div>
+        <span>system.status = operational</span>
+        <div className="footer-links">
+          <a href={profile.links.github} target="_blank" rel="noreferrer">GitHub</a>
+          <a href={profile.links.linkedin} target="_blank" rel="noreferrer">LinkedIn</a>
+          <a href={`mailto:${profile.email}`}>Email</a>
+        </div>
+        <span>© 2026 Rakesh Devarakonda</span>
       </footer>
 
       {/* Floating Back to Top Button */}
