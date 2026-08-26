@@ -1121,10 +1121,16 @@ html.cursor-is-clicking .cursor-follower__dot { transform: scale(2) !important; 
 .achievement-item > svg { color: var(--text-muted); }
 .honesty-note { display: flex; align-items: center; gap: .45rem; margin: 1.7rem 0 0; color: var(--text-muted); font-family: var(--mono); font-size: .62rem; }
 
+.content-grid--contact {
+  display: flex;
+  flex-direction: column;
+  gap: 2.2rem;
+}
 .section--contact { padding-bottom: 4rem; }
-.contact-layout { display: grid; grid-template-columns: .75fr 1.25fr; gap: 3rem; }
+.contact-layout { display: grid; grid-template-columns: 340px 1fr; gap: 2.5rem; align-items: start; }
 .contact-details { display: flex; flex-direction: column; gap: .2rem; }
 .contact-details a, .contact-copy-card { display: grid; grid-template-columns: 20px 1fr auto; align-items: center; gap: .6rem; padding: .8rem 0; border: 0; border-bottom: 1px solid var(--line); background: transparent; color: var(--text-soft); font-family: var(--mono); font-size: .65rem; text-align: left; cursor: pointer; transition: color .2s ease, padding-left .2s ease; }
+.contact-details a span, .contact-copy-card span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .contact-details a:hover, .contact-copy-card:hover { padding-left: .3rem; color: var(--blue); }
 .contact-details a svg:first-child, .contact-copy-card svg:first-child { color: var(--blue); }
 .contact-details a svg:last-child, .contact-copy-card svg:last-child { color: var(--text-muted); }
