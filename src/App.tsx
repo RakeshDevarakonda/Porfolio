@@ -188,7 +188,7 @@ function App() {
       <header className="site-header">
         <a className="brand" href="#top" aria-label="Back to top">
           <span className="brand-mark">&gt;_</span>
-          <span>STARK // DR</span>
+          <span>DR</span>
         </a>
 
         <nav className={`main-nav ${mobileOpen ? 'is-open' : ''}`} aria-label="Primary navigation">
@@ -222,7 +222,7 @@ function App() {
             <Reveal>
               <div className="status-badge">
                 <span className="status-dot" />
-                <span>STARK HUD // SYSTEM ONLINE</span>
+                <span>Available for Full Stack & Backend Roles</span>
               </div>
 
               <h1 id="hero-title">
@@ -303,8 +303,8 @@ function App() {
             <div className="hero-grid-glow" aria-hidden="true" />
             <SystemsScene />
             <div className="hero-visual-caption">
-              <span>STARK ARC REACTOR CORE v4.8</span>
-              <span>THREE.JS RAYCASTING TILT</span>
+              <span>INTERACTIVE 3D SYSTEM CORE</span>
+              <span>THREE.JS / RAYCASTING TILT</span>
             </div>
           </Reveal>
         </section>
@@ -356,7 +356,7 @@ function App() {
               {/* 3D Identity Core Viewer */}
               <Reveal className="about-3d-box" delay={50}>
                 <About3DViewer />
-                <div className="about-3d-caption">3D ARC REACTOR CORE · HYDERABAD, INDIA</div>
+                <div className="about-3d-caption">3D IDENTITY CORE · HYDERABAD, INDIA</div>
               </Reveal>
 
               <Reveal className="about-copy-upgraded" delay={90}>
