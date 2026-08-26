@@ -1,9 +1,30 @@
 import { useEffect, useRef, useState } from 'react'
 
+interface SkillNode {
+  name: string
+  category: string
+  color: number
+}
+
+const heroSkillsData: SkillNode[] = [
+  { name: 'Node.js', category: 'Backend', color: 0x38bdf8 },
+  { name: 'Go (Golang)', category: 'Backend', color: 0x34d399 },
+  { name: 'TypeScript', category: 'Languages', color: 0x38bdf8 },
+  { name: 'PostgreSQL', category: 'Database', color: 0xc084fc },
+  { name: 'MongoDB', category: 'Database', color: 0x34d399 },
+  { name: 'AWS SQS', category: 'Cloud', color: 0x38bdf8 },
+  { name: 'Docker', category: 'Cloud', color: 0x38bdf8 },
+  { name: 'WebSockets', category: 'Real-Time', color: 0xc084fc },
+  { name: 'Python', category: 'Languages', color: 0x38bdf8 },
+  { name: 'Redis', category: 'Database', color: 0x34d399 },
+  { name: 'React 18', category: 'Frontend', color: 0x34d399 },
+  { name: 'Next.js', category: 'Frontend', color: 0xc084fc },
+]
+
 export function SystemsScene() {
   const containerRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const [hoveredNode, setHoveredNode] = useState<string | null>(null)
+  const [hoveredSkill, setHoveredSkill] = useState<SkillNode | null>(null)
   const [isThreeReady, setIsThreeReady] = useState(false)
 
   useEffect(() => {
@@ -29,7 +50,7 @@ export function SystemsScene() {
 
       const scene = new THREE.Scene()
       const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100)
-      camera.position.set(0, 0, 7.5)
+      camera.position.set(0, 0, 8.5)
 
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
       renderer.outputColorSpace = THREE.SRGBColorSpace
@@ -39,20 +60,20 @@ export function SystemsScene() {
       scene.add(globeGroup)
 
       // 1. Outer Hologram Wireframe Globe Sphere
-      const globeGeo = new THREE.IcosahedronGeometry(2.5, 2)
+      const globeGeo = new THREE.IcosahedronGeometry(2.8, 2)
       const globeMat = new THREE.MeshStandardMaterial({
         color: 0x38bdf8,
         emissive: 0x0284c7,
-        emissiveIntensity: 0.8,
+        emissiveIntensity: 0.7,
         wireframe: true,
         transparent: true,
-        opacity: 0.35,
+        opacity: 0.3,
       })
       const outerGlobe = new THREE.Mesh(globeGeo, globeMat)
       globeGroup.add(outerGlobe)
 
-      // 2. Dual Orbital Rings
-      const ring1Geo = new THREE.TorusGeometry(2.9, 0.025, 16, 100)
+      // 2. Orbital Rings
+      const ring1Geo = new THREE.TorusGeometry(3.2, 0.025, 16, 100)
       const ring1Mat = new THREE.MeshStandardMaterial({
         color: 0x38bdf8,
         emissive: 0x38bdf8,
@@ -62,7 +83,7 @@ export function SystemsScene() {
       ring1.rotation.x = Math.PI / 3
       globeGroup.add(ring1)
 
-      const ring2Geo = new THREE.TorusGeometry(3.2, 0.02, 16, 100)
+      const ring2Geo = new THREE.TorusGeometry(3.5, 0.02, 16, 100)
       const ring2Mat = new THREE.MeshStandardMaterial({
         color: 0x34d399,
         emissive: 0x34d399,
@@ -72,44 +93,66 @@ export function SystemsScene() {
       ring2.rotation.y = Math.PI / 4
       globeGroup.add(ring2)
 
-      // 3. Floating 3D Skill Tech Nodes on Globe Surface
-      const skillNodesData = [
-        { name: 'Node.js', pos: new THREE.Vector3(-2.2, 1.2, 0.8), color: 0x38bdf8 },
-        { name: 'Go (Golang)', pos: new THREE.Vector3(2.2, 1.4, 0.5), color: 0x34d399 },
-        { name: 'PostgreSQL', pos: new THREE.Vector3(-1.8, -1.6, 1.2), color: 0xc084fc },
-        { name: 'MongoDB', pos: new THREE.Vector3(1.9, -1.5, 0.9), color: 0x34d399 },
-        { name: 'AWS SQS', pos: new THREE.Vector3(0, 2.3, -1.2), color: 0x38bdf8 },
-        { name: 'WebSockets', pos: new THREE.Vector3(0, -2.4, -0.8), color: 0xc084fc },
-      ]
-
+      // 3. Fibonacci 3D Skills Nodes & Floating 3D Text Sprites
       const nodeMeshes: InstanceType<typeof THREE.Mesh>[] = []
+      const phi = Math.PI * (3 - Math.sqrt(5)) // Golden angle
 
-      skillNodesData.forEach((node) => {
-        const nodeGeo = new THREE.OctahedronGeometry(0.32, 0)
+      heroSkillsData.forEach((skill, i) => {
+        const y = 1 - (i / (heroSkillsData.length - 1)) * 2
+        const radiusAtY = Math.sqrt(1 - y * y)
+        const theta = phi * i
+
+        const radius = 2.8
+        const x = Math.cos(theta) * radiusAtY * radius
+        const z = Math.sin(theta) * radiusAtY * radius
+        const posY = y * radius
+
+        // 3D Hexagonal Node Geometry
+        const nodeGeo = new THREE.CylinderGeometry(0.28, 0.28, 0.15, 6)
         const nodeMat = new THREE.MeshStandardMaterial({
-          color: node.color,
-          emissive: node.color,
+          color: skill.color,
+          emissive: skill.color,
           emissiveIntensity: 2.5,
-          metalness: 0.9,
-          roughness: 0.1,
+          metalness: 0.85,
+          roughness: 0.15,
         })
 
         const mesh = new THREE.Mesh(nodeGeo, nodeMat)
-        mesh.position.copy(node.pos)
-        mesh.userData = node
+        mesh.position.set(x, posY, z)
+        mesh.rotation.x = Math.PI / 4
+        mesh.userData = skill
         globeGroup.add(mesh)
         nodeMeshes.push(mesh)
 
+        // 2D Text Canvas Sprite floating next to node
+        const textCanvas = document.createElement('canvas')
+        textCanvas.width = 256
+        textCanvas.height = 64
+        const ctx = textCanvas.getContext('2d')
+        if (ctx) {
+          ctx.fillStyle = '#f4f6f8'
+          ctx.font = 'bold 22px DM Mono, monospace'
+          ctx.textAlign = 'center'
+          ctx.textBaseline = 'middle'
+          ctx.fillText(skill.name, 128, 32)
+        }
+        const textTexture = new THREE.CanvasTexture(textCanvas)
+        const spriteMat = new THREE.SpriteMaterial({ map: textTexture, transparent: true })
+        const sprite = new THREE.Sprite(spriteMat)
+        sprite.position.set(x, posY - 0.45, z)
+        sprite.scale.set(1.5, 0.38, 1)
+        globeGroup.add(sprite)
+
         // Laser Conduits connecting to central core
-        const points = [new THREE.Vector3(0, 0, 0), node.pos]
+        const points = [new THREE.Vector3(0, 0, 0), new THREE.Vector3(x, posY, z)]
         const lineGeo = new THREE.BufferGeometry().setFromPoints(points)
-        const lineMat = new THREE.LineBasicMaterial({ color: node.color, transparent: true, opacity: 0.4 })
+        const lineMat = new THREE.LineBasicMaterial({ color: skill.color, transparent: true, opacity: 0.3 })
         const line = new THREE.Line(lineGeo, lineMat)
         globeGroup.add(line)
       })
 
       // 4. Central Energy Core
-      const coreGeo = new THREE.IcosahedronGeometry(0.8, 1)
+      const coreGeo = new THREE.IcosahedronGeometry(0.7, 1)
       const coreMat = new THREE.MeshStandardMaterial({
         color: 0x38bdf8,
         emissive: 0x38bdf8,
@@ -158,11 +201,11 @@ export function SystemsScene() {
       const animate = (time: number) => {
         const elapsed = time * 0.001
 
-        outerGlobe.rotation.y = elapsed * 0.4
-        outerGlobe.rotation.x = Math.sin(elapsed * 0.3) * 0.2
+        outerGlobe.rotation.y = elapsed * 0.3
+        outerGlobe.rotation.x = Math.sin(elapsed * 0.3) * 0.15
         centerCore.rotation.y = -elapsed * 0.8
-        ring1.rotation.z = elapsed * 0.6
-        ring2.rotation.z = -elapsed * 0.4
+        ring1.rotation.z = elapsed * 0.5
+        ring2.rotation.z = -elapsed * 0.35
 
         globeGroup.rotation.y += (targetRotation.y - globeGroup.rotation.y) * 0.05
         globeGroup.rotation.x += (targetRotation.x - globeGroup.rotation.x) * 0.05
@@ -172,10 +215,10 @@ export function SystemsScene() {
         const intersects = raycaster.intersectObjects(nodeMeshes)
 
         if (intersects.length > 0) {
-          const hovered = intersects[0].object.userData.name as string
-          if (hovered !== hoveredNode) setHoveredNode(hovered)
-        } else if (hoveredNode !== null) {
-          setHoveredNode(null)
+          const hovered = intersects[0].object.userData as SkillNode
+          if (hovered !== hoveredSkill) setHoveredSkill(hovered)
+        } else if (hoveredSkill !== null) {
+          setHoveredSkill(null)
         }
 
         renderer.render(scene, camera)
@@ -205,24 +248,24 @@ export function SystemsScene() {
       cancelled = true
       cleanup?.()
     }
-  }, [hoveredNode])
+  }, [hoveredSkill])
 
   return (
     <div
       ref={containerRef}
       className={`systems-scene ${isThreeReady ? 'systems-scene--ready' : ''}`}
-      aria-label="3D Interactive Tech Skills Globe"
+      aria-label="3D Interactive Skills Globe"
     >
       <canvas ref={canvasRef} className="systems-scene__canvas" />
 
       {/* Dynamic Hover HUD Overlay */}
       <div className="marvel-hero-hud">
-        <span className="marvel-hero-hud__tag">3D TECH GLOBE // HERO CORE</span>
+        <span className="marvel-hero-hud__tag">3D SKILLS GLOBE // HERO CORE</span>
         <strong className="marvel-hero-hud__title">
-          {hoveredNode ? hoveredNode.toUpperCase() : 'SYSTEM ARCHITECTURE GLOBE'}
+          {hoveredSkill ? hoveredSkill.name.toUpperCase() : '3D SKILLS GLOBE'}
         </strong>
         <span className="marvel-hero-hud__detail">
-          {hoveredNode ? `Active Microservice Endpoint · ${hoveredNode}` : 'Interactive 3D Skills Sphere · Hover to inspect endpoints'}
+          {hoveredSkill ? `Category: ${hoveredSkill.category} · Hovering Node` : 'All Core Technologies Embedded · Hover over any 3D node'}
         </span>
       </div>
     </div>
