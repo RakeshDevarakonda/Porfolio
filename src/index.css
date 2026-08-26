@@ -962,10 +962,10 @@ html.cursor-is-clicking .cursor-follower__dot { transform: scale(2) !important; 
 .section--bordered { border-top: 1px solid var(--line); }
 .section-heading { display: grid; grid-template-columns: 50px 1fr; gap: 1.4rem; align-items: start; }
 .section-index { padding-top: .45rem; color: var(--blue); font-family: var(--mono); font-size: .68rem; }
-.section-heading h2 { position: relative; width: max-content; margin: 0; color: var(--text); font-size: clamp(1.8rem, 2.7vw, 2.5rem); font-weight: 700; letter-spacing: -.055em; }
+.section-heading h2 { position: relative; max-width: 100%; margin: 0; color: var(--text); font-size: clamp(1.8rem, 2.7vw, 2.5rem); font-weight: 700; letter-spacing: -.055em; word-break: break-word; }
 .section-heading h2::after { content: ''; display: block; width: 28px; height: 2px; margin-top: .7rem; background: linear-gradient(90deg, var(--blue), var(--mint)); }
 .section-heading p { max-width: 370px; margin: 1.25rem 0 0; color: var(--text-muted); font-size: .85rem; line-height: 1.7; }
-.content-grid--about, .content-grid--skills, .content-grid--experience, .content-grid--projects, .content-grid--opensource, .content-grid--contact { display: grid; grid-template-columns: 25% 1fr; gap: 3.5rem; }
+.content-grid--about, .content-grid--skills, .content-grid--experience, .content-grid--projects { display: grid; grid-template-columns: 25% 1fr; gap: 3.5rem; }
 .content-grid--about { grid-template-columns: 25% 1fr .75fr; gap: 2.7rem; }
 .about-copy { max-width: 540px; }
 .about-copy p { margin: 0 0 1.2rem; color: var(--text-soft); font-size: .93rem; line-height: 1.85; }
