@@ -10,11 +10,19 @@ export function BirdFollower() {
 
   const mouseRef = useRef({ x: -100, y: -100 })
   const birdRef = useRef({ x: -100, y: -100 })
-  const roamOffsetRef = useRef({ x: 0, y: 0 })
-  const roamAngleRef = useRef<number>(0)
+  const waypointRef = useRef({ x: window.innerWidth * 0.5, y: window.innerHeight * 0.3 })
   const animationFrameRef = useRef<number>(0)
   const idleTimeoutRef = useRef<number | null>(null)
+  const waypointTimerRef = useRef<number | null>(null)
   const flapTimeRef = useRef<number>(0)
+
+  // Pick random screen waypoint across full viewport width/height
+  const pickNewWaypoint = () => {
+    const margin = 80
+    const rx = margin + Math.random() * (window.innerWidth - margin * 2)
+    const ry = margin + Math.random() * (window.innerHeight - margin * 2)
+    waypointRef.current = { x: rx, y: ry }
+  }
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -22,9 +30,13 @@ export function BirdFollower() {
       setIsRoamMode(false)
 
       if (idleTimeoutRef.current) clearTimeout(idleTimeoutRef.current)
+      if (waypointTimerRef.current) clearInterval(waypointTimerRef.current)
+
       idleTimeoutRef.current = window.setTimeout(() => {
         setIsRoamMode(true)
-      }, 600)
+        pickNewWaypoint()
+        waypointTimerRef.current = window.setInterval(pickNewWaypoint, 3200)
+      }, 700)
     }
 
     window.addEventListener('mousemove', handleMouseMove, { passive: true })
@@ -37,14 +49,9 @@ export function BirdFollower() {
       let targetY = mouseRef.current.y - 28
 
       if (isRoamMode) {
-        // Orbital roaming physics around cursor when idle
-        roamAngleRef.current += 0.035
-        const roamRadius = 38
-        const roamDx = Math.cos(roamAngleRef.current) * roamRadius
-        const roamDy = Math.sin(roamAngleRef.current * 1.5) * (roamRadius * 0.6)
-
-        targetX = mouseRef.current.x + roamDx
-        targetY = mouseRef.current.y - 25 + roamDy
+        // Fly towards random screen-wide waypoints across the full viewport
+        targetX = waypointRef.current.x
+        targetY = waypointRef.current.y
       }
 
       const dx = targetX - birdRef.current.x
@@ -55,7 +62,7 @@ export function BirdFollower() {
         if (dx < -1.5) setDirection('left')
         else if (dx > 1.5) setDirection('right')
 
-        const speed = isRoamMode ? 0.045 : 0.075
+        const speed = isRoamMode ? 0.035 : 0.075
         birdRef.current.x += dx * speed
         birdRef.current.y += dy * speed
 
@@ -71,11 +78,12 @@ export function BirdFollower() {
       window.removeEventListener('mousemove', handleMouseMove)
       cancelAnimationFrame(animationFrameRef.current)
       if (idleTimeoutRef.current) clearTimeout(idleTimeoutRef.current)
+      if (waypointTimerRef.current) clearInterval(waypointTimerRef.current)
     }
   }, [isRoamMode])
 
   const handleBirdClick = () => {
-    const chirps = ['Chirp Chirp! 🐤', 'Exploring Sky! ☁️', 'Cyber Bird Online! 🕊️', '❤️ Roaming Free!']
+    const chirps = ['Chirp Chirp! 🐤', 'Flying Across Screen! 🌤️', 'Cyber Bird Online! 🕊️', '❤️ Free Flight!']
     const nextChirp = chirps[chirpCount % chirps.length]
     setChirpCount((c) => c + 1)
     setChirpText(nextChirp)
@@ -85,7 +93,7 @@ export function BirdFollower() {
   if (pos.x < 0 || pos.y < 0) return null
 
   // Wing flap animation
-  const wingAngle = Math.sin(flapPhase * 2.2) * (isRoamMode ? 28 : 38)
+  const wingAngle = Math.sin(flapPhase * 2.2) * (isRoamMode ? 32 : 38)
   const floatBob = Math.sin(Date.now() * 0.004) * -3
 
   return (
@@ -125,7 +133,7 @@ export function BirdFollower() {
         </div>
       ) : null}
 
-      {/* SVG Animated Flying / Roaming Bird */}
+      {/* SVG Animated Flying / Screen Roaming Bird */}
       <div
         onClick={handleBirdClick}
         style={{
@@ -134,11 +142,11 @@ export function BirdFollower() {
           cursor: 'pointer',
           pointerEvents: 'auto',
           filter: isRoamMode
-            ? 'drop-shadow(0 0 10px rgba(56, 189, 248, 0.5))'
+            ? 'drop-shadow(0 0 12px rgba(56, 189, 248, 0.6))'
             : 'drop-shadow(0 4px 12px rgba(56, 189, 248, 0.4))',
           transition: 'filter 0.3s ease',
         }}
-        title={isRoamMode ? 'Cyber Bird — Roaming freely! Click to chirp.' : 'Cyber Bird Companion — Following cursor!'}
+        title={isRoamMode ? 'Cyber Bird — Flying all over the screen! Click to chirp.' : 'Cyber Bird Companion — Following cursor!'}
       >
         <svg
           viewBox="0 0 64 52"
