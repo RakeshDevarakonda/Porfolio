@@ -32,15 +32,20 @@ button, input, textarea { font: inherit; }
 button, a { -webkit-tap-highlight-color: transparent; }
 a { color: inherit; text-decoration: none; }
 
-/* User Portrait Card in About Section */
+/* Clean & Executive User Portrait Card in About Section */
 .about-portrait-card {
   position: relative;
   width: 100%;
   border-radius: 12px;
   overflow: hidden;
-  border: 1px solid var(--line-strong);
-  background: var(--surface-strong);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), 0 0 25px color-mix(in srgb, var(--blue) 20%, transparent);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.about-portrait-card:hover {
+  border-color: var(--line-strong);
+  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.5), 0 0 20px color-mix(in srgb, var(--orange) 15%, transparent);
 }
 .about-portrait-wrapper {
   position: relative;
@@ -53,58 +58,31 @@ a { color: inherit; text-decoration: none; }
   height: 100%;
   object-fit: cover;
   object-position: center top;
-  filter: contrast(1.05) brightness(0.98);
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .about-portrait-card:hover .about-portrait-img {
-  transform: scale(1.04);
+  transform: scale(1.03);
 }
-.about-portrait-hud-overlay {
+.about-portrait-caption {
   position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: linear-gradient(to top, rgba(6, 9, 14, 0.88) 0%, transparent 45%);
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1rem 1.1rem 0.9rem;
+  background: linear-gradient(to top, rgba(5, 8, 15, 0.92) 0%, rgba(5, 8, 15, 0.6) 70%, transparent 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
 }
-
-.hud-corner {
-  position: absolute;
-  width: 14px;
-  height: 14px;
-  border: 2px solid var(--orange);
+.about-portrait-caption strong {
+  color: var(--text);
+  font-size: 1.05rem;
+  letter-spacing: -0.02em;
 }
-.hud-corner--tl { top: 12px; left: 12px; border-right: 0; border-bottom: 0; }
-.hud-corner--tr { top: 12px; right: 12px; border-left: 0; border-bottom: 0; }
-.hud-corner--bl { bottom: 12px; left: 12px; border-right: 0; border-top: 0; }
-.hud-corner--br { bottom: 12px; right: 12px; border-left: 0; border-top: 0; }
-
-.hud-status-badge {
-  position: absolute;
-  top: 1rem;
-  left: 1rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.3rem 0.65rem;
-  border-radius: 99px;
-  border: 1px solid var(--orange);
-  background: rgba(8, 14, 24, 0.88);
-  backdrop-filter: blur(12px);
+.about-portrait-caption span {
   color: var(--orange);
   font-family: var(--mono);
-  font-size: 0.6rem;
-  letter-spacing: 0.08em;
-}
-.hud-location-tag {
-  position: absolute;
-  bottom: 0.85rem;
-  left: 1rem;
-  right: 1rem;
-  color: var(--blue);
-  font-family: var(--mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.06em;
-  text-align: center;
-  text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+  font-size: 0.64rem;
 }
 
 /* Hero Motto & Boot String */

@@ -9,20 +9,9 @@ export function About3DViewer() {
           alt="Devarakonda Rakesh — Full Stack Developer & Backend Engineer"
           className="about-portrait-img"
         />
-        <div className="about-portrait-hud-overlay">
-          <div className="hud-corner hud-corner--tl" />
-          <div className="hud-corner hud-corner--tr" />
-          <div className="hud-corner hud-corner--bl" />
-          <div className="hud-corner hud-corner--br" />
-
-          <div className="hud-status-badge">
-            <span className="status-dot" />
-            <span>DEVARAKONDA RAKESH</span>
-          </div>
-
-          <div className="hud-location-tag">
-            <span>HYDERABAD, INDIA · BACKEND ENGINEER</span>
-          </div>
+        <div className="about-portrait-caption">
+          <strong>Devarakonda Rakesh</strong>
+          <span>Full Stack Developer | Hyderabad, India</span>
         </div>
       </div>
     </TiltCard3D>
