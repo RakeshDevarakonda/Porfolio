@@ -5,22 +5,21 @@ interface SkillNode {
   category: 'Backend' | 'Languages' | 'Database' | 'Cloud' | 'Real-Time' | 'Frontend'
   level: string
   color: number
-  connections: string[]
 }
 
 const skillData: SkillNode[] = [
-  { name: 'Node.js', category: 'Backend', level: 'Production / High-Scale', color: 0x38bdf8, connections: ['REST APIs', 'WebSockets', 'MongoDB', 'Redis'] },
-  { name: 'Go (Golang)', category: 'Backend', level: 'Microservices & Gin APIs', color: 0x34d399, connections: ['PostgreSQL', 'AWS SQS', 'Docker', 'Redis'] },
-  { name: 'TypeScript', category: 'Languages', level: 'Strict Typing Architecture', color: 0x38bdf8, connections: ['React 18', 'Node.js', 'Next.js'] },
-  { name: 'PostgreSQL', category: 'Database', level: 'Multi-Tenant RBAC & ACID', color: 0xc084fc, connections: ['Go (Golang)', 'Node.js', 'AWS SQS'] },
-  { name: 'MongoDB', category: 'Database', level: 'High-Volume Aggregations', color: 0x10b981, connections: ['Node.js', 'Redis'] },
-  { name: 'AWS SQS', category: 'Cloud', level: 'Event-Driven Pipelines', color: 0xfbbf24, connections: ['Go (Golang)', 'PostgreSQL'] },
-  { name: 'Docker', category: 'Cloud', level: 'Container Orchestration', color: 0x38bdf8, connections: ['Go (Golang)', 'Node.js'] },
-  { name: 'WebSockets', category: 'Real-Time', level: 'Sub-100ms Live Sync', color: 0xc084fc, connections: ['Node.js', 'React 18', 'Redis'] },
-  { name: 'Python', category: 'Languages', level: 'Automation & Data Tools', color: 0xfbbf24, connections: ['PostgreSQL'] },
-  { name: 'Redis', category: 'Database', level: 'In-Memory Cache & Queues', color: 0x10b981, connections: ['Node.js', 'WebSockets', 'MongoDB'] },
-  { name: 'React 18', category: 'Frontend', level: 'Interactive HUD & 3D UI', color: 0x34d399, connections: ['Next.js', 'TypeScript', 'WebSockets'] },
-  { name: 'Next.js', category: 'Frontend', level: 'SSR & Server Components', color: 0xc084fc, connections: ['React 18', 'TypeScript'] },
+  { name: 'Node.js', category: 'Backend', level: 'Production / High-Scale', color: 0x38bdf8 },
+  { name: 'Go (Golang)', category: 'Backend', level: 'Microservices & Gin APIs', color: 0x34d399 },
+  { name: 'TypeScript', category: 'Languages', level: 'Strict Typing Architecture', color: 0x38bdf8 },
+  { name: 'PostgreSQL', category: 'Database', level: 'Multi-Tenant RBAC & ACID', color: 0xc084fc },
+  { name: 'MongoDB', category: 'Database', level: 'High-Volume Aggregations', color: 0x10b981 },
+  { name: 'AWS SQS', category: 'Cloud', level: 'Event-Driven Pipelines', color: 0xfbbf24 },
+  { name: 'Docker', category: 'Cloud', level: 'Container Orchestration', color: 0x38bdf8 },
+  { name: 'WebSockets', category: 'Real-Time', level: 'Sub-100ms Live Sync', color: 0xc084fc },
+  { name: 'Python', category: 'Languages', level: 'Automation & Data Tools', color: 0xfbbf24 },
+  { name: 'Redis', category: 'Database', level: 'In-Memory Cache & Queues', color: 0x10b981 },
+  { name: 'React 18', category: 'Frontend', level: 'Interactive HUD & 3D UI', color: 0x34d399 },
+  { name: 'Next.js', category: 'Frontend', level: 'SSR & Server Components', color: 0xc084fc },
 ]
 
 const categories = ['All', 'Backend', 'Languages', 'Database', 'Cloud', 'Real-Time', 'Frontend'] as const
@@ -263,15 +262,9 @@ export function InteractiveSkills3D() {
 
       {hoveredSkill ? (
         <div className="skills-3d-hud">
-          <span className="skills-3d-hud__cat">3D NEURAL MATRIX // {hoveredSkill.category}</span>
+          <span className="skills-3d-hud__cat">3D SKILL CORE // {hoveredSkill.category}</span>
           <strong className="skills-3d-hud__title">{hoveredSkill.name}</strong>
           <span className="skills-3d-hud__level">{hoveredSkill.level}</span>
-          {hoveredSkill.connections.length > 0 ? (
-            <div className="skills-3d-hud__connections">
-              <span>PIPELINE CONNECTIONS:</span>
-              <p>{hoveredSkill.name} → {hoveredSkill.connections.join(' → ')}</p>
-            </div>
-          ) : null}
         </div>
       ) : null}
 
