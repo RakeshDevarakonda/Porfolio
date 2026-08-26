@@ -1,25 +1,28 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type * as THREE from 'three'
 
-function disposeScene(scene: THREE.Scene) {
-  scene.traverse((object) => {
-    const mesh = object as THREE.Mesh
-    if (mesh.geometry) mesh.geometry.dispose()
-
-    if (Array.isArray(mesh.material)) {
-      mesh.material.forEach((material) => material.dispose())
-    } else if (mesh.material) {
-      mesh.material.dispose()
-    }
-  })
+interface ServiceNodeData {
+  label: string
+  detail: string
+  color: number
+  position: [number, number, number]
 }
 
+const serviceNodes: ServiceNodeData[] = [
+  { label: 'WebSockets', detail: 'Sub-100ms Live Stream', color: 0x38bdf8, position: [-2.6, 1.4, 0.4] },
+  { label: 'PostgreSQL', detail: 'RBAC / Multi-Tenant DB', color: 0xa855f7, position: [2.6, 1.4, -0.4] },
+  { label: 'AWS SQS', detail: 'Event-Driven Pipeline', color: 0xfbbf24, position: [-2.6, -1.4, -0.4] },
+  { label: 'REST APIs', detail: 'Go & Node Microservices', color: 0x34d399, position: [2.6, -1.4, 0.4] },
+]
+
 export function SystemsScene() {
-  const sceneRef = useRef<HTMLDivElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const [activeNode, setActiveNode] = useState<ServiceNodeData | null>(null)
+  const [isThreeReady, setIsThreeReady] = useState(false)
 
   useEffect(() => {
-    const container = sceneRef.current
+    const container = containerRef.current
     const canvas = canvasRef.current
     if (!container || !canvas) return
 
@@ -32,188 +35,103 @@ export function SystemsScene() {
 
       let renderer: THREE.WebGLRenderer
       try {
-        renderer = new THREE.WebGLRenderer({
-          canvas,
-          alpha: true,
-          antialias: true,
-          powerPreference: 'high-performance',
-        })
+        renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true })
       } catch {
         return
       }
 
+      setIsThreeReady(true)
+
       const scene = new THREE.Scene()
-      const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 100)
-      camera.position.set(2.8, 2.0, 7.2)
-      camera.lookAt(0, 0, 0)
+      const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100)
+      camera.position.set(0, 0, 7.8)
 
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
       renderer.outputColorSpace = THREE.SRGBColorSpace
-      renderer.toneMapping = THREE.ACESFilmicToneMapping
-      renderer.toneMappingExposure = 1.15
-      container.classList.add('systems-scene--ready')
 
-      // Main System Cluster Group
-      const cluster = new THREE.Group()
-      cluster.position.set(0, -0.1, 0)
-      scene.add(cluster)
+      const masterGroup = new THREE.Group()
+      scene.add(masterGroup)
 
-      // 1. Central Core: Glowing Dodecahedron (Database Core)
+      // --- STARK ARC REACTOR 3D CORE ---
+      // 1. Central Arc Reactor Core Specimen
+      const coreGeo = new THREE.OctahedronGeometry(1.0, 2)
       const coreMat = new THREE.MeshStandardMaterial({
-        color: 0x1769d8,
-        emissive: 0x155ebd,
-        emissiveIntensity: 2.2,
-        metalness: 0.8,
-        roughness: 0.15,
-        wireframe: false,
-      })
-      const coreMesh = new THREE.Mesh(new THREE.DodecahedronGeometry(1.15, 0), coreMat)
-      cluster.add(coreMesh)
-
-      // Core Edges Glow
-      const coreEdgeMat = new THREE.LineBasicMaterial({ color: 0x8be8c5, transparent: true, opacity: 0.95 })
-      const coreEdges = new THREE.LineSegments(new THREE.EdgesGeometry(coreMesh.geometry), coreEdgeMat)
-      coreEdges.scale.setScalar(1.02)
-      coreMesh.add(coreEdges)
-
-      // 2. Outer Glass Bounding Box
-      const outerGlassMat = new THREE.MeshPhysicalMaterial({
-        color: 0x73a8ff,
-        metalness: 0.4,
+        color: 0x38bdf8,
+        emissive: 0x0284c7,
+        emissiveIntensity: 2.5,
+        metalness: 0.9,
         roughness: 0.1,
-        transmission: 0.35,
-        transparent: true,
-        opacity: 0.22,
-        side: THREE.DoubleSide,
       })
-      const outerBox = new THREE.Mesh(new THREE.BoxGeometry(3.1, 3.1, 3.1), outerGlassMat)
-      cluster.add(outerBox)
+      const coreMesh = new THREE.Mesh(coreGeo, coreMat)
+      masterGroup.add(coreMesh)
 
-      const outerEdgeMat = new THREE.LineBasicMaterial({ color: 0x73a8ff, transparent: true, opacity: 0.65 })
-      const outerEdges = new THREE.LineSegments(new THREE.EdgesGeometry(outerBox.geometry), outerEdgeMat)
-      outerEdges.scale.setScalar(1.002)
-      cluster.add(outerEdges)
+      // 2. Outer Arc Reactor Wireframe Cage
+      const cageGeo = new THREE.IcosahedronGeometry(1.28, 1)
+      const cageMat = new THREE.MeshStandardMaterial({
+        color: 0xfbbf24,
+        emissive: 0xd97706,
+        emissiveIntensity: 1.8,
+        wireframe: true,
+      })
+      const cageMesh = new THREE.Mesh(cageGeo, cageMat)
+      masterGroup.add(cageMesh)
 
-      // 3. Orbiting Microservice Satellite Nodes (4 Service Nodes)
-      const satelliteGroup = new THREE.Group()
-      cluster.add(satelliteGroup)
+      // 3. Concentric Spinning Stark Reactor Rings
+      const ringMat1 = new THREE.MeshStandardMaterial({ color: 0x38bdf8, emissive: 0x38bdf8, emissiveIntensity: 3.0 })
+      const ringGeo1 = new THREE.TorusGeometry(1.6, 0.04, 16, 64)
+      const ringMesh1 = new THREE.Mesh(ringGeo1, ringMat1)
+      ringMesh1.rotation.x = Math.PI / 3
+      masterGroup.add(ringMesh1)
 
-      const satPositions = [
-        { x: 2.2, y: 0.6, z: 0, color: 0x8be8c5, name: 'WebSockets' },
-        { x: -2.2, y: -0.6, z: 0.5, color: 0x73a8ff, name: 'REST API' },
-        { x: 0, y: 2.0, z: -1.2, color: 0xad94ff, name: 'AWS SQS' },
-        { x: 0.8, y: -2.0, z: 1.2, color: 0xffb36b, name: 'PostgreSQL' },
-      ]
+      const ringMat2 = new THREE.MeshStandardMaterial({ color: 0xfbbf24, emissive: 0xfbbf24, emissiveIntensity: 2.8 })
+      const ringGeo2 = new THREE.TorusGeometry(1.85, 0.03, 16, 64)
+      const ringMesh2 = new THREE.Mesh(ringGeo2, ringMat2)
+      ringMesh2.rotation.y = Math.PI / 4
+      masterGroup.add(ringMesh2)
 
-      const satelliteMeshes: THREE.Mesh[] = []
+      // --- ORBITING STARK SERVICE NODES & ENERGY LASERS ---
+      const nodeMeshes: THREE.Mesh[] = []
 
-      satPositions.forEach((pos) => {
-        const satMat = new THREE.MeshStandardMaterial({
-          color: pos.color,
-          emissive: pos.color,
-          emissiveIntensity: 1.8,
-          metalness: 0.6,
+      serviceNodes.forEach((node) => {
+        const nodeGeo = new THREE.CylinderGeometry(0.32, 0.32, 0.2, 6)
+        const nodeMat = new THREE.MeshStandardMaterial({
+          color: node.color,
+          emissive: node.color,
+          emissiveIntensity: 2.0,
+          metalness: 0.8,
           roughness: 0.2,
         })
-        const satMesh = new THREE.Mesh(new THREE.OctahedronGeometry(0.32, 0), satMat)
-        satMesh.position.set(pos.x, pos.y, pos.z)
-        satelliteGroup.add(satMesh)
-        satelliteMeshes.push(satMesh)
+        const mesh = new THREE.Mesh(nodeGeo, nodeMat)
+        mesh.position.set(...node.position)
+        mesh.rotation.x = Math.PI / 4
+        mesh.userData = node
+        masterGroup.add(mesh)
+        nodeMeshes.push(mesh)
 
-        // Laser beam lines linking satellite node to central core
-        const lineGeo = new THREE.BufferGeometry().setFromPoints([
-          new THREE.Vector3(0, 0, 0),
-          new THREE.Vector3(pos.x, pos.y, pos.z),
-        ])
-        const lineMat = new THREE.LineDashedMaterial({
-          color: pos.color,
-          dashSize: 0.2,
-          gapSize: 0.1,
-          transparent: true,
-          opacity: 0.7,
-        })
-        const laserLine = new THREE.Line(lineGeo, lineMat)
-        satelliteGroup.add(laserLine)
+        // Laser Plasma Beam Conduit
+        const points = [new THREE.Vector3(0, 0, 0), new THREE.Vector3(...node.position)]
+        const lineGeo = new THREE.BufferGeometry().setFromPoints(points)
+        const lineMat = new THREE.LineBasicMaterial({ color: node.color, transparent: true, opacity: 0.7 })
+        const line = new THREE.Line(lineGeo, lineMat)
+        masterGroup.add(line)
       })
 
-      // 4. Cybernetic Concentric Torus Rings
-      const ringMat = new THREE.MeshStandardMaterial({
-        color: 0x8be8c5,
-        emissive: 0x35d89b,
-        emissiveIntensity: 2.5,
-        metalness: 0.5,
-        roughness: 0.15,
-      })
-      const ring1 = new THREE.Mesh(new THREE.TorusGeometry(1.65, 0.035, 16, 100), ringMat)
-      ring1.rotation.x = Math.PI / 2
-      cluster.add(ring1)
+      // Point & Ambient Lights
+      const reactorLight = new THREE.PointLight(0x38bdf8, 8, 12)
+      reactorLight.position.set(0, 0, 2)
+      scene.add(reactorLight)
 
-      const ring2Mat = new THREE.MeshStandardMaterial({
-        color: 0xad94ff,
-        emissive: 0x8e63ff,
-        emissiveIntensity: 2.2,
-        metalness: 0.5,
-        roughness: 0.15,
-      })
-      const ring2 = new THREE.Mesh(new THREE.TorusGeometry(1.95, 0.025, 16, 100), ring2Mat)
-      ring2.rotation.set(0.65, 0.3, -0.4)
-      cluster.add(ring2)
+      const goldLight = new THREE.PointLight(0xfbbf24, 6, 10)
+      goldLight.position.set(0, 2, 3)
+      scene.add(goldLight)
 
-      // 5. Dynamic Interactive Point Lights
-      const pointerLight = new THREE.PointLight(0x73a8ff, 10, 8)
-      pointerLight.position.set(2, 2, 3)
-      scene.add(pointerLight)
-
-      const mintLight = new THREE.PointLight(0x8be8c5, 6, 6)
-      mintLight.position.set(-2.5, -1.5, 2)
-      scene.add(mintLight)
-
-      const ambientLight = new THREE.AmbientLight(0x8cb6e8, 1.2)
+      const ambientLight = new THREE.AmbientLight(0x38bdf8, 1.2)
       scene.add(ambientLight)
 
-      // 6. Grid Helper Floor
-      const grid = new THREE.GridHelper(8, 16, 0x3b82f6, 0x1e3a8a)
-      grid.position.y = -2.15
-      if (Array.isArray(grid.material)) {
-        grid.material.forEach((mat) => {
-          mat.transparent = true
-          mat.opacity = 0.3
-        })
-      } else {
-        grid.material.transparent = true
-        grid.material.opacity = 0.3
-      }
-      scene.add(grid)
-
-      // 7. Ambient Particle Cloud (220 particles)
-      const particleCount = 220
-      const particlePositions = new Float32Array(particleCount * 3)
-      for (let i = 0; i < particleCount; i++) {
-        const radius = 2.0 + Math.random() * 2.2
-        const angle = Math.random() * Math.PI * 2
-        particlePositions[i * 3] = Math.cos(angle) * radius
-        particlePositions[i * 3 + 1] = (Math.random() - 0.5) * 4.2
-        particlePositions[i * 3 + 2] = Math.sin(angle) * radius
-      }
-      const particleGeo = new THREE.BufferGeometry()
-      particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3))
-      const particles = new THREE.Points(
-        particleGeo,
-        new THREE.PointsMaterial({
-          color: 0x8be8c5,
-          size: 0.03,
-          transparent: true,
-          opacity: 0.75,
-          sizeAttenuation: true,
-        }),
-      )
-      scene.add(particles)
-
-      // Pointer Interactivity & Rotation
-      const pointer = new THREE.Vector2()
+      // Raycaster for Hovering Stark Nodes
+      const raycaster = new THREE.Raycaster()
+      const mouse = new THREE.Vector2(-100, -100)
       const targetRotation = new THREE.Vector2()
-      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-      let animationFrame = 0
 
       const resize = () => {
         const { width, height } = container.getBoundingClientRect()
@@ -223,14 +141,14 @@ export function SystemsScene() {
         renderer.setSize(width, height, false)
       }
 
-      const handlePointerMove = (event: PointerEvent) => {
+      const handlePointerMove = (e: PointerEvent) => {
         const bounds = container.getBoundingClientRect()
-        pointer.x = ((event.clientX - bounds.left) / bounds.width) * 2 - 1
-        pointer.y = -((event.clientY - bounds.top) / bounds.height) * 2 + 1
-        targetRotation.y = pointer.x * 0.45
-        targetRotation.x = pointer.y * 0.3
-        pointerLight.position.x = pointer.x * 3.5
-        pointerLight.position.y = pointer.y * 2.5
+        const px = ((e.clientX - bounds.left) / bounds.width) * 2 - 1
+        const py = -((e.clientY - bounds.top) / bounds.height) * 2 + 1
+        mouse.x = px
+        mouse.y = py
+        targetRotation.y = px * 0.45
+        targetRotation.x = py * 0.3
       }
 
       const resizeObserver = new ResizeObserver(resize)
@@ -238,21 +156,35 @@ export function SystemsScene() {
       container.addEventListener('pointermove', handlePointerMove, { passive: true })
       resize()
 
+      let animationFrame = 0
       const animate = (time: number) => {
         const elapsed = time * 0.001
 
-        if (!reducedMotion) {
-          cluster.rotation.y += 0.003
-          coreMesh.rotation.x += 0.004
-          coreMesh.rotation.z += 0.002
-          satelliteGroup.rotation.y = -elapsed * 0.25
-          ring2.rotation.z += 0.0025
-          particles.rotation.y = elapsed * 0.04
-        }
+        coreMesh.rotation.y = elapsed * 0.8
+        coreMesh.rotation.x = Math.sin(elapsed * 0.5) * 0.3
+        cageMesh.rotation.y = -elapsed * 0.6
 
-        cluster.rotation.x += (targetRotation.x - cluster.rotation.x) * 0.04
-        cluster.rotation.z += (-targetRotation.y * 0.3 - cluster.rotation.z) * 0.04
-        ring1.rotation.z += 0.0015
+        ringMesh1.rotation.z = elapsed * 0.9
+        ringMesh2.rotation.z = -elapsed * 0.7
+
+        masterGroup.rotation.y += (targetRotation.y - masterGroup.rotation.y) * 0.05
+        masterGroup.rotation.x += (targetRotation.x - masterGroup.rotation.x) * 0.05
+
+        // Raycasting
+        raycaster.setFromCamera(mouse, camera)
+        const intersects = raycaster.intersectObjects(nodeMeshes)
+
+        let hovered: ServiceNodeData | null = null
+
+        nodeMeshes.forEach((m) => {
+          const isHover = intersects.length > 0 && intersects[0].object === m
+          if (isHover) hovered = m.userData as ServiceNodeData
+          const scale = isHover ? 1.4 : 1.0 + Math.sin(elapsed * 3 + m.position.x) * 0.06
+          m.scale.setScalar(scale)
+          m.rotation.y += 0.02
+        })
+
+        if (hovered !== activeNode) setActiveNode(hovered)
 
         renderer.render(scene, camera)
         animationFrame = requestAnimationFrame(animate)
@@ -264,9 +196,11 @@ export function SystemsScene() {
         cancelAnimationFrame(animationFrame)
         resizeObserver.disconnect()
         container.removeEventListener('pointermove', handlePointerMove)
-        disposeScene(scene)
+        coreGeo.dispose()
+        coreMat.dispose()
+        cageGeo.dispose()
+        cageMat.dispose()
         renderer.dispose()
-        container.classList.remove('systems-scene--ready')
       }
     }
 
@@ -278,9 +212,25 @@ export function SystemsScene() {
   }, [])
 
   return (
-    <div ref={sceneRef} className="systems-scene" aria-hidden="true">
+    <div
+      ref={containerRef}
+      className={`systems-scene ${isThreeReady ? 'systems-scene--ready' : ''}`}
+      aria-label="3D Stark Arc Reactor Microservice Architecture"
+    >
+      <img
+        src="/assets/system-core.png"
+        alt="Stark Arc Reactor Microservice System Core"
+        className="systems-scene__fallback"
+      />
       <canvas ref={canvasRef} className="systems-scene__canvas" />
-      <img className="systems-scene__fallback" src="/assets/system-core.png" alt="" draggable="false" />
+
+      {activeNode ? (
+        <div className="systems-scene-hud">
+          <span className="systems-scene-hud__tag">STARK NODE ACTIVE</span>
+          <strong className="systems-scene-hud__title">{activeNode.label}</strong>
+          <span className="systems-scene-hud__detail">{activeNode.detail}</span>
+        </div>
+      ) : null}
     </div>
   )
 }

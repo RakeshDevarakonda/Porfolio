@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { soundFx } from './SoundEffects'
 
 interface CommandOutput {
   cmd: string
@@ -8,12 +7,12 @@ interface CommandOutput {
 
 const defaultHistory: CommandOutput[] = [
   {
-    cmd: 'whoami',
-    output: ['Devarakonda Rakesh — Backend-Focused Full Stack Developer'],
+    cmd: 'stark-protocol --status',
+    output: ['F.R.I.D.A.Y OS v4.8 — DEVARAKONDA RAKESH DATA CORE ONLINE'],
   },
   {
     cmd: 'cat location.json',
-    output: ['{\n  "city": "Hyderabad",\n  "country": "India",\n  "timezone": "Asia/Kolkata (IST)"\n}'],
+    output: ['{\n  "city": "Hyderabad",\n  "country": "India",\n  "grid": "Asia/Kolkata (IST)"\n}'],
   },
   {
     cmd: 'cat focus.txt',
@@ -31,12 +30,11 @@ export function InteractiveTerminal() {
   const [inputVal, setInputVal] = useState('')
 
   const handleCommand = (cmd: string) => {
-    soundFx.playClick()
     const cleanCmd = cmd.trim().toLowerCase()
     let outputLines: string[] = []
 
-    if (cleanCmd === 'whoami') {
-      outputLines = ['Devarakonda Rakesh — Backend-Focused Full Stack Developer']
+    if (cleanCmd === 'whoami' || cleanCmd === 'stark-protocol --status') {
+      outputLines = ['F.R.I.D.A.Y OS v4.8 — DEVARAKONDA RAKESH DATA CORE ONLINE']
     } else if (cleanCmd === 'cat focus.txt') {
       outputLines = [
         '1. RBAC & Multi-Tenant Data Isolation (10+ Workspaces)',
@@ -45,14 +43,14 @@ export function InteractiveTerminal() {
         '4. Open Source Developer Tooling (npm: mongo-datalayer)',
       ]
     } else if (cleanCmd === 'cat location.json') {
-      outputLines = ['{\n  "city": "Hyderabad",\n  "country": "India",\n  "timezone": "Asia/Kolkata (IST)"\n}']
+      outputLines = ['{\n  "city": "Hyderabad",\n  "country": "India",\n  "grid": "Asia/Kolkata (IST)"\n}']
     } else if (cleanCmd === 'cat stack.sh') {
       outputLines = ['Go · Node.js · TypeScript · PostgreSQL · MongoDB · Redis · AWS · Docker']
     } else if (cleanCmd === 'clear') {
       setHistory([])
       return
     } else {
-      outputLines = [`bash: command not found: ${cleanCmd}. Try 'whoami', 'cat focus.txt', 'cat stack.sh', or 'clear'.`]
+      outputLines = [`stark-hud: command not found: ${cleanCmd}. Try 'whoami', 'cat focus.txt', 'cat stack.sh', or 'clear'.`]
     }
 
     setHistory((prev) => [...prev, { cmd: cleanCmd, output: outputLines }])
@@ -62,7 +60,7 @@ export function InteractiveTerminal() {
   return (
     <div className="interactive-terminal">
       <div className="terminal-card__top">
-        <span className="terminal-title">profile.sh — zsh</span>
+        <span className="terminal-title">F.R.I.D.A.Y PROTOCOL v4.8 — STARK HUD</span>
         <span className="window-dots"><span /><span /><span /></span>
       </div>
 
@@ -78,7 +76,7 @@ export function InteractiveTerminal() {
         {history.map((item, idx) => (
           <div key={idx} className="terminal-history-item">
             <p className="terminal-prompt">
-              <i>$</i> {item.cmd}
+              <i>STARK&gt;</i> {item.cmd}
             </p>
             {item.output.map((line, lIdx) => (
               <pre key={lIdx} className="terminal-output">{line}</pre>
@@ -93,7 +91,7 @@ export function InteractiveTerminal() {
             if (inputVal.trim()) handleCommand(inputVal)
           }}
         >
-          <span className="terminal-prompt-prefix">$</span>
+          <span className="terminal-prompt-prefix">STARK&gt;</span>
           <input
             type="text"
             className="terminal-input"

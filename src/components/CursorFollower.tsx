@@ -1,112 +1,117 @@
 import { useEffect, useRef, useState } from 'react'
 
 export function CursorFollower() {
-  const dotRef = useRef<HTMLSpanElement>(null)
   const haloRef = useRef<HTMLSpanElement>(null)
+  const dotRef = useRef<HTMLSpanElement>(null)
   const ringRef = useRef<HTMLSpanElement>(null)
   const labelRef = useRef<HTMLSpanElement>(null)
-  const [hoverText, setHoverText] = useState<string>('')
+  const [actionText, setActionText] = useState('STARK HUD')
 
   useEffect(() => {
-    const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)')
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
+    if (typeof window === 'undefined') return
+    const isCoarse = window.matchMedia('(hover: none), (pointer: coarse)').matches
+    if (isCoarse) return
 
-    if (!finePointer.matches || reducedMotion.matches) return
+    document.documentElement.classList.add('has-cursor-follower')
 
-    const dot = dotRef.current
-    const halo = haloRef.current
-    const ring = ringRef.current
-    const label = labelRef.current
-    if (!dot || !halo || !ring || !label) return
-
-    let targetX = -100
-    let targetY = -100
-    let haloX = targetX
-    let haloY = targetY
-    let ringX = targetX
-    let ringY = targetY
+    let pointerX = window.innerWidth / 2
+    let pointerY = window.innerHeight / 2
+    let haloX = pointerX
+    let haloY = pointerY
+    let ringX = pointerX
+    let ringY = pointerY
     let rotation = 0
-    let frame = 0
 
-    const render = () => {
-      // Fluid spring lerp physics
-      haloX += (targetX - haloX) * 0.18
-      haloY += (targetY - haloY) * 0.18
+    let animationFrame = 0
 
-      ringX += (targetX - ringX) * 0.09
-      ringY += (targetY - ringY) * 0.09
+    const updatePosition = () => {
+      haloX += (pointerX - haloX) * 0.22
+      haloY += (pointerY - haloY) * 0.22
 
-      rotation += 0.8
+      ringX += (pointerX - ringX) * 0.12
+      ringY += (pointerY - ringY) * 0.12
 
-      halo.style.transform = `translate3d(${haloX}px, ${haloY}px, 0)`
-      ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) rotate(${rotation}deg)`
-      label.style.transform = `translate3d(${haloX}px, ${haloY + 36}px, 0)`
+      rotation = (rotation + 1.5) % 360
 
-      frame = requestAnimationFrame(render)
+      if (haloRef.current) {
+        haloRef.current.style.transform = `translate3d(${haloX}px, ${haloY}px, 0)`
+      }
+      if (dotRef.current) {
+        dotRef.current.style.transform = `translate3d(${pointerX}px, ${pointerY}px, 0)`
+      }
+      if (ringRef.current) {
+        ringRef.current.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) rotate(${rotation}deg)`
+      }
+      if (labelRef.current) {
+        labelRef.current.style.transform = `translate3d(${pointerX + 24}px, ${pointerY - 24}px, 0)`
+      }
+
+      animationFrame = requestAnimationFrame(updatePosition)
     }
 
-    const handlePointerMove = (event: PointerEvent) => {
-      targetX = event.clientX
-      targetY = event.clientY
-      dot.style.transform = `translate3d(${targetX}px, ${targetY}px, 0)`
+    const handlePointerMove = (e: PointerEvent) => {
+      pointerX = e.clientX
+      pointerY = e.clientY
       document.documentElement.classList.add('cursor-is-visible')
 
-      const targetEl = event.target as HTMLElement | null
-      const interactive = targetEl?.closest(
-        'a, button, input, textarea, .project-card, .focus-card, .skill-pill, .tilt-card-3d'
-      )
+      const target = e.target as HTMLElement | null
+      const interactiveEl = target?.closest('a, button, [role="button"], input, textarea, .tilt-card-3d')
 
-      if (interactive) {
+      if (interactiveEl) {
         document.documentElement.classList.add('cursor-is-interactive')
-        if (targetEl?.closest('.project-card')) {
-          setHoverText('VIEW BUILD')
-        } else if (targetEl?.closest('a[download]')) {
-          setHoverText('DOWNLOAD')
-        } else if (targetEl?.closest('button') || targetEl?.closest('a')) {
-          setHoverText('OPEN')
+        if (interactiveEl.tagName === 'A') {
+          const href = (interactiveEl as HTMLAnchorElement).href || ''
+          if (href.includes('github')) setActionText('[TARGET: GITHUB]')
+          else if (href.includes('linkedin')) setActionText('[TARGET: LINKEDIN]')
+          else if (href.includes('resume')) setActionText('[TARGET: RESUME]')
+          else setActionText('[TARGET: OPEN LINK]')
+        } else if (interactiveEl.tagName === 'BUTTON') {
+          setActionText('[TARGET: EXECUTE]')
         } else {
-          setHoverText('')
+          setActionText('[TARGET: LOCK-ON]')
         }
       } else {
         document.documentElement.classList.remove('cursor-is-interactive')
-        setHoverText('')
       }
     }
 
     const handlePointerDown = () => document.documentElement.classList.add('cursor-is-clicking')
     const handlePointerUp = () => document.documentElement.classList.remove('cursor-is-clicking')
-    const handlePointerLeave = () => document.documentElement.classList.remove('cursor-is-visible')
+    const handleMouseLeave = () => document.documentElement.classList.remove('cursor-is-visible')
 
-    document.addEventListener('pointermove', handlePointerMove, { passive: true })
-    document.addEventListener('pointerdown', handlePointerDown, { passive: true })
-    document.addEventListener('pointerup', handlePointerUp, { passive: true })
-    document.addEventListener('pointerleave', handlePointerLeave, { passive: true })
-    frame = requestAnimationFrame(render)
-    document.documentElement.classList.add('has-cursor-follower')
+    window.addEventListener('pointermove', handlePointerMove, { passive: true })
+    window.addEventListener('pointerdown', handlePointerDown)
+    window.addEventListener('pointerup', handlePointerUp)
+    document.addEventListener('mouseleave', handleMouseLeave)
+
+    animationFrame = requestAnimationFrame(updatePosition)
 
     return () => {
-      cancelAnimationFrame(frame)
-      document.removeEventListener('pointermove', handlePointerMove)
-      document.removeEventListener('pointerdown', handlePointerDown)
-      document.removeEventListener('pointerup', handlePointerUp)
-      document.removeEventListener('pointerleave', handlePointerLeave)
-      document.documentElement.classList.remove('has-cursor-follower', 'cursor-is-visible', 'cursor-is-interactive', 'cursor-is-clicking')
+      cancelAnimationFrame(animationFrame)
+      document.documentElement.classList.remove(
+        'has-cursor-follower',
+        'cursor-is-visible',
+        'cursor-is-interactive',
+        'cursor-is-clicking'
+      )
+      window.removeEventListener('pointermove', handlePointerMove)
+      window.removeEventListener('pointerdown', handlePointerDown)
+      window.removeEventListener('pointerup', handlePointerUp)
+      document.removeEventListener('mouseleave', handleMouseLeave)
     }
   }, [])
 
   return (
     <div className="cursor-follower" aria-hidden="true">
-      <span ref={ringRef} className="cursor-follower__ring" />
       <span ref={haloRef} className="cursor-follower__halo">
         <span className="cursor-crosshair cursor-crosshair--top" />
-        <span className="cursor-crosshair cursor-crosshair--right" />
         <span className="cursor-crosshair cursor-crosshair--bottom" />
         <span className="cursor-crosshair cursor-crosshair--left" />
+        <span className="cursor-crosshair cursor-crosshair--right" />
       </span>
+      <span ref={ringRef} className="cursor-follower__ring" />
       <span ref={dotRef} className="cursor-follower__dot" />
-      <span ref={labelRef} className="cursor-follower__label">
-        {hoverText}
-      </span>
+      <span ref={labelRef} className="cursor-follower__label">{actionText}</span>
     </div>
   )
 }
