@@ -37,6 +37,7 @@ import { CursorFollower } from './components/CursorFollower'
 import { Full3DWorld } from './components/Full3DWorld'
 import { InteractiveTerminal } from './components/InteractiveTerminal'
 import { Preloader3D } from './components/Preloader3D'
+import { PuppyFollower } from './components/PuppyFollower'
 import { Reveal } from './components/Reveal'
 import { SectionHeading } from './components/SectionHeading'
 import { SystemsScene } from './components/SystemsScene'
@@ -180,6 +181,7 @@ function App() {
       {/* Full 3D Background World */}
       <Full3DWorld />
       <CursorFollower />
+      <PuppyFollower />
       <ToastContainer toasts={toasts} onDismiss={removeToast} />
 
       {/* Reading Progress Line */}
