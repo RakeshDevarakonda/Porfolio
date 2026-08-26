@@ -11,18 +11,18 @@ interface SkillNode {
 }
 
 const matrixSkills: SkillNode[] = [
-  { name: 'Node.js', category: 'Backend Tier', level: 'Production REST & Auth APIs', color: 0x38bdf8, colorHex: '#38bdf8', iconSymbol: '⬢', pos: [-2.2, 1.6, 0.5] },
-  { name: 'Go (Golang)', category: 'High-Concurrency Core', level: 'Gin Microservices & Pipelines', color: 0x34d399, colorHex: '#34d399', iconSymbol: '🦫', pos: [2.2, 1.6, 0.5] },
-  { name: 'TypeScript', category: 'Language Tier', level: 'Strict Enterprise Schemas', color: 0x38bdf8, colorHex: '#38bdf8', iconSymbol: 'TS', pos: [-3.0, 0.1, 0.2] },
-  { name: 'PostgreSQL', category: 'Relational DB', level: 'ACID & Multi-Tenant RBAC', color: 0xc084fc, colorHex: '#c084fc', iconSymbol: '🐘', pos: [3.0, 0.1, 0.2] },
-  { name: 'MongoDB', category: 'Document Store', level: 'Workspace Query Abstraction', color: 0x34d399, colorHex: '#34d399', iconSymbol: '🍃', pos: [-2.2, -1.5, 0.5] },
-  { name: 'AWS Cloud', category: 'Cloud Pipeline', level: 'SQS Queues & Lambda Triggers', color: 0x38bdf8, colorHex: '#38bdf8', iconSymbol: '☁', pos: [2.2, -1.5, 0.5] },
-  { name: 'Docker', category: 'DevOps', level: 'Container Orchestration', color: 0x38bdf8, colorHex: '#38bdf8', iconSymbol: '🐳', pos: [0, 2.5, -0.8] },
-  { name: 'WebSockets', category: 'Real-Time Tier', level: 'Sub-100ms Streaming & Sync', color: 0xc084fc, colorHex: '#c084fc', iconSymbol: '⚡', pos: [0, -2.5, -0.8] },
-  { name: 'Python', category: 'Scripting', level: 'Automation & Data Pipelines', color: 0x38bdf8, colorHex: '#38bdf8', iconSymbol: '🐍', pos: [-1.2, 0.8, -1.2] },
-  { name: 'Redis', category: 'In-Memory Cache', level: 'Pub/Sub & Session Storage', color: 0x34d399, colorHex: '#34d399', iconSymbol: '🔴', pos: [1.2, 0.8, -1.2] },
-  { name: 'React 18', category: 'Frontend UI', level: 'Concurrent Mode Components', color: 0x34d399, colorHex: '#34d399', iconSymbol: '⚛', pos: [-1.2, -0.8, -1.2] },
-  { name: 'Next.js', category: 'Full Stack UI', level: 'App Router & Server Actions', color: 0xc084fc, colorHex: '#c084fc', iconSymbol: '▲', pos: [1.2, -0.8, -1.2] },
+  { name: 'Node.js', category: 'Backend Tier', level: 'Production REST & Auth APIs', color: 0x38bdf8, colorHex: '#38bdf8', iconSymbol: '⬢', pos: [-2.3, 1.7, 0.5] },
+  { name: 'Go (Golang)', category: 'High-Concurrency Core', level: 'Gin Microservices & Pipelines', color: 0x34d399, colorHex: '#34d399', iconSymbol: '🦫', pos: [2.3, 1.7, 0.5] },
+  { name: 'TypeScript', category: 'Language Tier', level: 'Strict Enterprise Schemas', color: 0x38bdf8, colorHex: '#38bdf8', iconSymbol: 'TS', pos: [-3.1, 0.1, 0.2] },
+  { name: 'PostgreSQL', category: 'Relational DB', level: 'ACID & Multi-Tenant RBAC', color: 0xc084fc, colorHex: '#c084fc', iconSymbol: '🐘', pos: [3.1, 0.1, 0.2] },
+  { name: 'MongoDB', category: 'Document Store', level: 'Workspace Query Abstraction', color: 0x34d399, colorHex: '#34d399', iconSymbol: '🍃', pos: [-2.3, -1.6, 0.5] },
+  { name: 'AWS Cloud', category: 'Cloud Pipeline', level: 'SQS Queues & Lambda Triggers', color: 0x38bdf8, colorHex: '#38bdf8', iconSymbol: '☁', pos: [2.3, -1.6, 0.5] },
+  { name: 'Docker', category: 'DevOps', level: 'Container Orchestration', color: 0x38bdf8, colorHex: '#38bdf8', iconSymbol: '🐳', pos: [0, 2.6, -0.8] },
+  { name: 'WebSockets', category: 'Real-Time Tier', level: 'Sub-100ms Streaming & Sync', color: 0xc084fc, colorHex: '#c084fc', iconSymbol: '⚡', pos: [0, -2.6, -0.8] },
+  { name: 'Python', category: 'Scripting', level: 'Automation & Data Pipelines', color: 0x38bdf8, colorHex: '#38bdf8', iconSymbol: '🐍', pos: [-1.3, 0.9, -1.2] },
+  { name: 'Redis', category: 'In-Memory Cache', level: 'Pub/Sub & Session Storage', color: 0x34d399, colorHex: '#34d399', iconSymbol: '🔴', pos: [1.3, 0.9, -1.2] },
+  { name: 'React 18', category: 'Frontend UI', level: 'Concurrent Mode Components', color: 0x34d399, colorHex: '#34d399', iconSymbol: '⚛', pos: [-1.3, -0.9, -1.2] },
+  { name: 'Next.js', category: 'Full Stack UI', level: 'App Router & Server Actions', color: 0xc084fc, colorHex: '#c084fc', iconSymbol: '▲', pos: [1.3, -0.9, -1.2] },
 ]
 
 export function SystemsScene() {
@@ -64,7 +64,7 @@ export function SystemsScene() {
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
       renderer.outputColorSpace = THREE.SRGBColorSpace
 
-      // Master 3D Matrix Group
+      // Master 3D Icon Matrix Group
       const matrixGroup = new THREE.Group()
       scene.add(matrixGroup)
 
@@ -92,64 +92,64 @@ export function SystemsScene() {
       const cageMesh = new THREE.Mesh(cageGeo, cageMat)
       matrixGroup.add(cageMesh)
 
-      // 2. Build 3D Skill Nodes & Floating 3D Logo Canvas Labels
+      // 2. Build 3D Holographic Pedestals & Logo Sprites
       const nodeMeshes: InstanceType<typeof THREE.Mesh>[] = []
 
       matrixSkills.forEach((skill) => {
-        // Hexagonal Prism Node Geometry
-        const nodeGeo = new THREE.CylinderGeometry(0.32, 0.32, 0.16, 6)
-        const nodeMat = new THREE.MeshStandardMaterial({
+        // Hexagonal Pedestal Geometry
+        const pedestalGeo = new THREE.CylinderGeometry(0.36, 0.36, 0.12, 6)
+        const pedestalMat = new THREE.MeshStandardMaterial({
           color: skill.color,
           emissive: skill.color,
-          emissiveIntensity: 2.5,
+          emissiveIntensity: 2.4,
           metalness: 0.9,
           roughness: 0.1,
         })
 
-        const mesh = new THREE.Mesh(nodeGeo, nodeMat)
+        const mesh = new THREE.Mesh(pedestalGeo, pedestalMat)
         mesh.position.set(...skill.pos)
         mesh.rotation.x = Math.PI / 4
         mesh.userData = skill
         matrixGroup.add(mesh)
         nodeMeshes.push(mesh)
 
-        // Floating 2D Canvas Logo Sprite
+        // Glassmorphic 3D Logo Canvas Badge
         const textCanvas = document.createElement('canvas')
-        textCanvas.width = 300
-        textCanvas.height = 70
+        textCanvas.width = 320
+        textCanvas.height = 76
         const ctx = textCanvas.getContext('2d')
         if (ctx) {
           // Draw dark glass rounded background
-          ctx.fillStyle = 'rgba(8, 14, 24, 0.88)'
+          ctx.fillStyle = 'rgba(8, 14, 24, 0.92)'
           ctx.strokeStyle = skill.colorHex
           ctx.lineWidth = 2
           ctx.beginPath()
-          ctx.roundRect(10, 10, 280, 50, 8)
+          ctx.roundRect(10, 10, 300, 56, 10)
           ctx.fill()
           ctx.stroke()
 
           // Draw Logo Icon Symbol + Text Label
           ctx.fillStyle = skill.colorHex
-          ctx.font = 'bold 20px DM Mono, monospace'
+          ctx.font = 'bold 22px DM Mono, monospace'
           ctx.textAlign = 'left'
           ctx.textBaseline = 'middle'
-          ctx.fillText(skill.iconSymbol, 24, 35)
+          ctx.fillText(skill.iconSymbol, 26, 38)
 
           ctx.fillStyle = '#ffffff'
-          ctx.font = 'bold 18px DM Mono, monospace'
-          ctx.fillText(skill.name, 62, 35)
+          ctx.font = 'bold 19px DM Mono, monospace'
+          ctx.fillText(skill.name, 68, 38)
         }
         const textTexture = new THREE.CanvasTexture(textCanvas)
         const spriteMat = new THREE.SpriteMaterial({ map: textTexture, transparent: true })
         const sprite = new THREE.Sprite(spriteMat)
-        sprite.position.set(skill.pos[0], skill.pos[1] - 0.45, skill.pos[2])
-        sprite.scale.set(1.6, 0.4, 1)
+        sprite.position.set(skill.pos[0], skill.pos[1] - 0.48, skill.pos[2])
+        sprite.scale.set(1.7, 0.42, 1)
         matrixGroup.add(sprite)
 
         // Laser Beams to Core
         const points = [new THREE.Vector3(0, 0, 0), new THREE.Vector3(...skill.pos)]
         const lineGeo = new THREE.BufferGeometry().setFromPoints(points)
-        const lineMat = new THREE.LineBasicMaterial({ color: skill.color, transparent: true, opacity: 0.35 })
+        const lineMat = new THREE.LineBasicMaterial({ color: skill.color, transparent: true, opacity: 0.38 })
         const line = new THREE.Line(lineGeo, lineMat)
         matrixGroup.add(line)
       })
@@ -215,8 +215,8 @@ export function SystemsScene() {
 
           if (isHovered) hovered = skill
 
-          const currentActive = (activeSkillRef.current as SkillNode)?.name || ''
-          const isSelected = currentActive === skill.name
+          const activeName = (activeSkillRef.current as SkillNode)?.name || ''
+          const isSelected = activeName === skill.name
 
           // Hover elevation & scale
           const targetScale = isHovered || isSelected ? 1.5 : 1.0
@@ -229,8 +229,8 @@ export function SystemsScene() {
         })
 
         if (hovered) {
-          const currentActive = (activeSkillRef.current as SkillNode)?.name || ''
-          if ((hovered as SkillNode).name !== currentActive) {
+          const activeName = (activeSkillRef.current as SkillNode)?.name || ''
+          if ((hovered as SkillNode).name !== activeName) {
             setActiveSkill(hovered)
           }
         }
@@ -264,7 +264,7 @@ export function SystemsScene() {
     <div
       ref={containerRef}
       className={`systems-scene ${isReady ? 'systems-scene--ready' : ''}`}
-      aria-label="3D Interactive Tech Skills Core Matrix"
+      aria-label="3D Holographic Tech Skill Icon Matrix"
     >
       <canvas ref={canvasRef} className="systems-scene__canvas" />
 
