@@ -1121,7 +1121,7 @@ html.cursor-is-clicking .cursor-follower__dot { transform: scale(2) !important; 
 .achievement-item > svg { color: var(--text-muted); }
 .honesty-note { display: flex; align-items: center; gap: .45rem; margin: 1.7rem 0 0; color: var(--text-muted); font-family: var(--mono); font-size: .62rem; }
 
-.content-grid--contact {
+.content-grid--contact, .content-grid--opensource {
   display: flex;
   flex-direction: column;
   gap: 2.2rem;
