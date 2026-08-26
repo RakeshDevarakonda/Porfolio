@@ -4,6 +4,7 @@ export function PuppyFollower() {
   const [pos, setPos] = useState({ x: -100, y: -100 })
   const [direction, setDirection] = useState<'left' | 'right'>('right')
   const [isWalking, setIsWalking] = useState(false)
+  const [walkPhase, setWalkPhase] = useState(0)
   const [barkText, setBarkText] = useState<string | null>(null)
   const [barkCount, setBarkCount] = useState(0)
 
@@ -11,6 +12,7 @@ export function PuppyFollower() {
   const puppyRef = useRef({ x: -100, y: -100 })
   const animationFrameRef = useRef<number>(0)
   const idleTimeoutRef = useRef<number | null>(null)
+  const stepTimeRef = useRef<number>(0)
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -20,8 +22,8 @@ export function PuppyFollower() {
     window.addEventListener('mousemove', handleMouseMove, { passive: true })
 
     const animate = () => {
-      const targetX = mouseRef.current.x + 24
-      const targetY = mouseRef.current.y + 24
+      const targetX = mouseRef.current.x + 30
+      const targetY = mouseRef.current.y + 30
 
       const dx = targetX - puppyRef.current.x
       const dy = targetY - puppyRef.current.y
@@ -35,9 +37,13 @@ export function PuppyFollower() {
         if (dx < -3) setDirection('left')
         else if (dx > 3) setDirection('right')
 
-        // Physics lerp follow movement speed
-        puppyRef.current.x += dx * 0.085
-        puppyRef.current.y += dy * 0.085
+        // Smooth, gentle normal walking speed (0.045 lerp factor)
+        puppyRef.current.x += dx * 0.045
+        puppyRef.current.y += dy * 0.045
+
+        // Relaxed natural walking step frequency
+        stepTimeRef.current += 0.14
+        setWalkPhase(stepTimeRef.current)
 
         setPos({ x: puppyRef.current.x, y: puppyRef.current.y })
       } else {
@@ -57,7 +63,7 @@ export function PuppyFollower() {
   }, [])
 
   const handlePuppyClick = () => {
-    const barks = ['Woof! 🐾', 'Arf Arf! ⚡', 'Cyber Pup! 🐕', '❤️ Wag!']
+    const barks = ['Woof! 🐾', 'Arf Arf! ⚡', 'White Pup! 🐕', '❤️ Happy Bark!']
     const nextBark = barks[barkCount % barks.length]
     setBarkCount((c) => c + 1)
     setBarkText(nextBark)
@@ -65,6 +71,13 @@ export function PuppyFollower() {
   }
 
   if (pos.x < 0 || pos.y < 0) return null
+
+  // Calculate 4-leg trotting gait rotations in degrees for normal walking pace
+  const leg1Rot = isWalking ? Math.sin(walkPhase) * 24 : 0 // Front Left & Back Right
+  const leg2Rot = isWalking ? -Math.sin(walkPhase) * 24 : 0 // Front Right & Back Left
+  const bodyBob = isWalking ? Math.abs(Math.sin(walkPhase * 2)) * -2.5 : Math.sin(Date.now() * 0.003) * -1.2
+  const tailWag = isWalking ? Math.sin(walkPhase * 2) * 20 : Math.sin(Date.now() * 0.004) * 8
+  const earFlop = isWalking ? Math.sin(walkPhase) * 10 : 0
 
   return (
     <div
@@ -103,17 +116,17 @@ export function PuppyFollower() {
         </div>
       ) : null}
 
-      {/* SVG Animated Walking Puppy */}
+      {/* SVG Animated Fluffy White Walking Puppy */}
       <div
         onClick={handlePuppyClick}
         style={{
-          width: '42px',
-          height: '34px',
+          width: '48px',
+          height: '40px',
           cursor: 'pointer',
           pointerEvents: 'auto',
-          filter: 'drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5))',
+          filter: 'drop-shadow(0 4px 10px rgba(0, 0, 0, 0.6))',
         }}
-        title="Cyber Puppy — Click to bark!"
+        title="Fluffy White Cyber Puppy — Click to bark!"
       >
         <svg
           viewBox="0 0 64 52"
@@ -122,128 +135,74 @@ export function PuppyFollower() {
           style={{
             width: '100%',
             height: '100%',
-            animation: isWalking ? 'puppy-walk-body 0.3s infinite alternate' : 'puppy-idle-body 2s infinite ease-in-out',
+            transform: `translateY(${bodyBob}px)`,
           }}
         >
-          {/* Tail */}
+          {/* Wagging White Tail with Fluffy Tip */}
           <path
             d="M12 24C8 18 4 16 2 12"
-            stroke="#38bdf8"
-            strokeWidth="3.5"
+            stroke="#ffffff"
+            strokeWidth="4"
             strokeLinecap="round"
             style={{
               transformOrigin: '12px 24px',
-              animation: isWalking ? 'puppy-tail-wag 0.15s infinite alternate' : 'puppy-tail-idle 1s infinite alternate',
+              transform: `rotate(${tailWag}deg)`,
             }}
           />
+          <circle cx="2" cy="12" r="2.5" fill="#38bdf8" />
 
           {/* Back Left Leg */}
-          <path
-            d="M18 32V46"
-            stroke="#0284c7"
-            strokeWidth="4"
-            strokeLinecap="round"
-            style={{
-              transformOrigin: '18px 32px',
-              animation: isWalking ? 'leg-swing-1 0.28s infinite alternate' : 'none',
-            }}
-          />
+          <g style={{ transformOrigin: '18px 32px', transform: `rotate(${leg1Rot}deg)` }}>
+            <path d="M18 32V46" stroke="#e2e8f0" strokeWidth="4.5" strokeLinecap="round" />
+            <circle cx="18" cy="46" r="2.5" fill="#38bdf8" />
+          </g>
 
           {/* Back Right Leg */}
-          <path
-            d="M26 32V46"
-            stroke="#0284c7"
-            strokeWidth="4"
-            strokeLinecap="round"
-            style={{
-              transformOrigin: '26px 32px',
-              animation: isWalking ? 'leg-swing-2 0.28s infinite alternate' : 'none',
-            }}
-          />
+          <g style={{ transformOrigin: '26px 32px', transform: `rotate(${leg2Rot}deg)` }}>
+            <path d="M26 32V46" stroke="#e2e8f0" strokeWidth="4.5" strokeLinecap="round" />
+            <circle cx="26" cy="46" r="2.5" fill="#38bdf8" />
+          </g>
 
-          {/* Body */}
-          <rect x="14" y="20" width="28" height="16" rx="8" fill="#38bdf8" />
-          <rect x="16" y="22" width="24" height="12" rx="6" fill="#0284c7" opacity="0.4" />
+          {/* White Fluffy Body */}
+          <rect x="14" y="20" width="28" height="16" rx="8" fill="#ffffff" />
+          <rect x="16" y="22" width="24" height="12" rx="6" fill="#f1f5f9" />
 
           {/* Front Left Leg */}
-          <path
-            d="M34 32V46"
-            stroke="#38bdf8"
-            strokeWidth="4"
-            strokeLinecap="round"
-            style={{
-              transformOrigin: '34px 32px',
-              animation: isWalking ? 'leg-swing-2 0.28s infinite alternate' : 'none',
-            }}
-          />
+          <g style={{ transformOrigin: '34px 32px', transform: `rotate(${leg2Rot}deg)` }}>
+            <path d="M34 32V46" stroke="#ffffff" strokeWidth="4.5" strokeLinecap="round" />
+            <circle cx="34" cy="46" r="2.5" fill="#34d399" />
+          </g>
 
           {/* Front Right Leg */}
-          <path
-            d="M40 32V46"
-            stroke="#38bdf8"
-            strokeWidth="4"
-            strokeLinecap="round"
-            style={{
-              transformOrigin: '40px 32px',
-              animation: isWalking ? 'leg-swing-1 0.28s infinite alternate' : 'none',
-            }}
-          />
+          <g style={{ transformOrigin: '40px 32px', transform: `rotate(${leg1Rot}deg)` }}>
+            <path d="M40 32V46" stroke="#ffffff" strokeWidth="4.5" strokeLinecap="round" />
+            <circle cx="40" cy="46" r="2.5" fill="#34d399" />
+          </g>
 
-          {/* Head */}
-          <circle cx="44" cy="18" r="10" fill="#38bdf8" />
+          {/* White Head */}
+          <circle cx="44" cy="18" r="10.5" fill="#ffffff" />
 
-          {/* Floppy Ear */}
+          {/* Fluffy Ear */}
           <path
             d="M40 10C36 12 34 18 36 22"
-            stroke="#0284c7"
+            stroke="#38bdf8"
             strokeWidth="4"
             strokeLinecap="round"
             style={{
               transformOrigin: '40px 10px',
-              animation: isWalking ? 'ear-flop 0.25s infinite alternate' : 'none',
+              transform: `rotate(${earFlop}deg)`,
             }}
           />
 
           {/* Eye */}
-          <circle cx="47" cy="16" r="1.8" fill="#090d16" />
-          <circle cx="47.5" cy="15.5" r="0.6" fill="#ffffff" />
+          <circle cx="47" cy="16" r="2" fill="#090d16" />
+          <circle cx="47.6" cy="15.4" r="0.7" fill="#ffffff" />
 
-          {/* Snout & Nose */}
-          <ellipse cx="51" cy="20" rx="4" ry="3" fill="#34d399" />
-          <circle cx="53" cy="19" r="1.2" fill="#090d16" />
+          {/* Cute Nose & Pink Tongue */}
+          <ellipse cx="51" cy="20" rx="3.5" ry="2.5" fill="#f472b6" />
+          <circle cx="53" cy="19" r="1.3" fill="#090d16" />
         </svg>
       </div>
-
-      <style>{`
-        @keyframes puppy-walk-body {
-          0% { transform: translateY(0px) rotate(0deg); }
-          100% { transform: translateY(-3px) rotate(2deg); }
-        }
-        @keyframes puppy-idle-body {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-2px); }
-        }
-        @keyframes leg-swing-1 {
-          0% { transform: rotate(-25deg); }
-          100% { transform: rotate(25deg); }
-        }
-        @keyframes leg-swing-2 {
-          0% { transform: rotate(25deg); }
-          100% { transform: rotate(-25deg); }
-        }
-        @keyframes puppy-tail-wag {
-          0% { transform: rotate(-15deg); }
-          100% { transform: rotate(20deg); }
-        }
-        @keyframes puppy-tail-idle {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(8deg); }
-        }
-        @keyframes ear-flop {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(-12deg); }
-        }
-      `}</style>
     </div>
   )
 }
