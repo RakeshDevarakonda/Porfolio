@@ -297,7 +297,7 @@ function App() {
             <div className="hero-grid-glow" aria-hidden="true" />
             <SystemsScene />
             <div className="hero-visual-caption">
-              <span>INTERACTIVE 3D TECH GLOBE</span>
+              <span>INTERACTIVE 3D SKILLS CORE</span>
               <span>THREE.JS ENGINE</span>
             </div>
           </Reveal>
