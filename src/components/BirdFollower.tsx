@@ -17,7 +17,7 @@ export function BirdFollower() {
 
   // Pick random screen waypoint across full viewport width/height
   const pickNewWaypoint = () => {
-    const margin = 70
+    const margin = 90
     const rx = margin + Math.random() * (window.innerWidth - margin * 2)
     const ry = margin + Math.random() * (window.innerHeight - margin * 2)
     waypointRef.current = { x: rx, y: ry }
@@ -39,7 +39,8 @@ export function BirdFollower() {
     window.addEventListener('mousemove', handleMouseMove, { passive: true })
 
     const animate = () => {
-      flapTimeRef.current += 0.24
+      // Graceful wing flap frequency
+      flapTimeRef.current += 0.15
       setFlapPhase(flapTimeRef.current)
 
       let targetX = mouseRef.current.x + 28
@@ -54,8 +55,8 @@ export function BirdFollower() {
       const dy = targetY - birdRef.current.y
       const dist = Math.hypot(dx, dy)
 
-      // Continuous flight: when close to current waypoint in roam mode, instantly pick next waypoint
-      if (isRoamMode && dist < 35) {
+      // Continuous flight: pick new waypoint when close
+      if (isRoamMode && dist < 45) {
         pickNewWaypoint()
       }
 
@@ -63,7 +64,8 @@ export function BirdFollower() {
         if (dx < -1.5) setDirection('left')
         else if (dx > 1.5) setDirection('right')
 
-        const speed = isRoamMode ? 0.04 : 0.08
+        // Realistic, gentle soaring speed (0.018 in roam, 0.045 in follow)
+        const speed = isRoamMode ? 0.018 : 0.045
         birdRef.current.x += dx * speed
         birdRef.current.y += dy * speed
 
@@ -83,7 +85,7 @@ export function BirdFollower() {
   }, [isRoamMode])
 
   const handleBirdClick = () => {
-    const chirps = ['Chirp Chirp! 🐤', 'Nonstop Free Flight! 🌤️', 'Cyber Bird Online! 🕊️', '❤️ Flying All Over!']
+    const chirps = ['Chirp Chirp! 🐤', 'Graceful Soaring! 🌤️', 'Cyber Bird Online! 🕊️', '❤️ Sky Companion!']
     const nextChirp = chirps[chirpCount % chirps.length]
     setChirpCount((c) => c + 1)
     setChirpText(nextChirp)
@@ -92,9 +94,9 @@ export function BirdFollower() {
 
   if (pos.x < 0 || pos.y < 0) return null
 
-  // Continuous wing flap animation
-  const wingAngle = Math.sin(flapPhase * 2.4) * 36
-  const floatBob = Math.sin(Date.now() * 0.004) * -3
+  // Natural wing flap animation rhythm
+  const wingAngle = Math.sin(flapPhase * 2.0) * 32
+  const floatBob = Math.sin(Date.now() * 0.003) * -3
 
   return (
     <div
@@ -133,7 +135,7 @@ export function BirdFollower() {
         </div>
       ) : null}
 
-      {/* SVG Animated Flying / Nonstop Screen Roaming Bird */}
+      {/* SVG Animated Soaring Bird */}
       <div
         onClick={handleBirdClick}
         style={{
@@ -146,7 +148,7 @@ export function BirdFollower() {
             : 'drop-shadow(0 4px 12px rgba(56, 189, 248, 0.4))',
           transition: 'filter 0.3s ease',
         }}
-        title={isRoamMode ? 'Cyber Bird — Nonstop full-screen flight! Click to chirp.' : 'Cyber Bird Companion — Following cursor!'}
+        title={isRoamMode ? 'Cyber Bird — Soaring gracefully! Click to chirp.' : 'Cyber Bird Companion — Following cursor!'}
       >
         <svg
           viewBox="0 0 64 52"
