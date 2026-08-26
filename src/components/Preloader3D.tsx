@@ -16,22 +16,28 @@ export function Preloader3D({ onComplete }: { onComplete?: () => void }) {
   const [fadingOut, setFadingOut] = useState(false)
 
   useEffect(() => {
+    // Total duration ~3000ms (3 seconds) across 30 ticks of 100ms
+    const totalTicks = 30
+    let currentTick = 0
+
     const interval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(interval)
+      currentTick += 1
+      const nextProgress = Math.min(Math.floor((currentTick / totalTicks) * 100), 100)
+      setProgress(nextProgress)
+
+      const logCount = Math.min(Math.floor((nextProgress / 100) * bootLogs.length) + 1, bootLogs.length)
+      setActiveLogs(bootLogs.slice(0, logCount))
+
+      if (currentTick >= totalTicks) {
+        clearInterval(interval)
+        setTimeout(() => {
           setFadingOut(true)
           setTimeout(() => {
             onComplete?.()
-          }, 450)
-          return 100
-        }
-        const next = prev + Math.floor(Math.random() * 16) + 12
-        const logCount = Math.min(Math.floor((next / 100) * bootLogs.length) + 1, bootLogs.length)
-        setActiveLogs(bootLogs.slice(0, logCount))
-        return Math.min(next, 100)
-      })
-    }, 75)
+          }, 500)
+        }, 200)
+      }
+    }, 100)
 
     return () => clearInterval(interval)
   }, [onComplete])
