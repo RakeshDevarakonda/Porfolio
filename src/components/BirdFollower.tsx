@@ -13,12 +13,11 @@ export function BirdFollower() {
   const waypointRef = useRef({ x: window.innerWidth * 0.5, y: window.innerHeight * 0.3 })
   const animationFrameRef = useRef<number>(0)
   const idleTimeoutRef = useRef<number | null>(null)
-  const waypointTimerRef = useRef<number | null>(null)
   const flapTimeRef = useRef<number>(0)
 
   // Pick random screen waypoint across full viewport width/height
   const pickNewWaypoint = () => {
-    const margin = 80
+    const margin = 70
     const rx = margin + Math.random() * (window.innerWidth - margin * 2)
     const ry = margin + Math.random() * (window.innerHeight - margin * 2)
     waypointRef.current = { x: rx, y: ry }
@@ -30,26 +29,23 @@ export function BirdFollower() {
       setIsRoamMode(false)
 
       if (idleTimeoutRef.current) clearTimeout(idleTimeoutRef.current)
-      if (waypointTimerRef.current) clearInterval(waypointTimerRef.current)
 
       idleTimeoutRef.current = window.setTimeout(() => {
         setIsRoamMode(true)
         pickNewWaypoint()
-        waypointTimerRef.current = window.setInterval(pickNewWaypoint, 3200)
-      }, 700)
+      }, 500)
     }
 
     window.addEventListener('mousemove', handleMouseMove, { passive: true })
 
     const animate = () => {
-      flapTimeRef.current += 0.22
+      flapTimeRef.current += 0.24
       setFlapPhase(flapTimeRef.current)
 
       let targetX = mouseRef.current.x + 28
       let targetY = mouseRef.current.y - 28
 
       if (isRoamMode) {
-        // Fly towards random screen-wide waypoints across the full viewport
         targetX = waypointRef.current.x
         targetY = waypointRef.current.y
       }
@@ -58,11 +54,16 @@ export function BirdFollower() {
       const dy = targetY - birdRef.current.y
       const dist = Math.hypot(dx, dy)
 
+      // Continuous flight: when close to current waypoint in roam mode, instantly pick next waypoint
+      if (isRoamMode && dist < 35) {
+        pickNewWaypoint()
+      }
+
       if (dist > 1.5) {
         if (dx < -1.5) setDirection('left')
         else if (dx > 1.5) setDirection('right')
 
-        const speed = isRoamMode ? 0.035 : 0.075
+        const speed = isRoamMode ? 0.04 : 0.08
         birdRef.current.x += dx * speed
         birdRef.current.y += dy * speed
 
@@ -78,12 +79,11 @@ export function BirdFollower() {
       window.removeEventListener('mousemove', handleMouseMove)
       cancelAnimationFrame(animationFrameRef.current)
       if (idleTimeoutRef.current) clearTimeout(idleTimeoutRef.current)
-      if (waypointTimerRef.current) clearInterval(waypointTimerRef.current)
     }
   }, [isRoamMode])
 
   const handleBirdClick = () => {
-    const chirps = ['Chirp Chirp! 🐤', 'Flying Across Screen! 🌤️', 'Cyber Bird Online! 🕊️', '❤️ Free Flight!']
+    const chirps = ['Chirp Chirp! 🐤', 'Nonstop Free Flight! 🌤️', 'Cyber Bird Online! 🕊️', '❤️ Flying All Over!']
     const nextChirp = chirps[chirpCount % chirps.length]
     setChirpCount((c) => c + 1)
     setChirpText(nextChirp)
@@ -92,8 +92,8 @@ export function BirdFollower() {
 
   if (pos.x < 0 || pos.y < 0) return null
 
-  // Wing flap animation
-  const wingAngle = Math.sin(flapPhase * 2.2) * (isRoamMode ? 32 : 38)
+  // Continuous wing flap animation
+  const wingAngle = Math.sin(flapPhase * 2.4) * 36
   const floatBob = Math.sin(Date.now() * 0.004) * -3
 
   return (
@@ -133,7 +133,7 @@ export function BirdFollower() {
         </div>
       ) : null}
 
-      {/* SVG Animated Flying / Screen Roaming Bird */}
+      {/* SVG Animated Flying / Nonstop Screen Roaming Bird */}
       <div
         onClick={handleBirdClick}
         style={{
@@ -146,7 +146,7 @@ export function BirdFollower() {
             : 'drop-shadow(0 4px 12px rgba(56, 189, 248, 0.4))',
           transition: 'filter 0.3s ease',
         }}
-        title={isRoamMode ? 'Cyber Bird — Flying all over the screen! Click to chirp.' : 'Cyber Bird Companion — Following cursor!'}
+        title={isRoamMode ? 'Cyber Bird — Nonstop full-screen flight! Click to chirp.' : 'Cyber Bird Companion — Following cursor!'}
       >
         <svg
           viewBox="0 0 64 52"
