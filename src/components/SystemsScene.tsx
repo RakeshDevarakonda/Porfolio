@@ -92,53 +92,49 @@ export function SystemsScene() {
       const innerCore = new THREE.Mesh(innerCoreGeo, innerCoreMat)
       helixGroup.add(innerCore)
 
-      // 2. Build 3D Helix Portals & Borderless Logo Sprites
-      const nodeMeshes: InstanceType<typeof THREE.Mesh>[] = []
+      // 2. Build Floating 3D Logo Sprites (No Diamond Boxes)
+      const spriteNodes: InstanceType<typeof THREE.Sprite>[] = []
       const radius = 2.8
 
       helixSkills.forEach((skill) => {
         const x = Math.cos(skill.angle) * radius
         const z = Math.sin(skill.angle) * radius
 
-        // Octahedron Portal Crystal Geometry
-        const portalGeo = new THREE.OctahedronGeometry(0.34, 0)
-        const portalMat = new THREE.MeshStandardMaterial({
-          color: skill.color,
-          emissive: skill.color,
-          emissiveIntensity: 2.6,
-          metalness: 0.9,
-          roughness: 0.1,
-        })
-
-        const mesh = new THREE.Mesh(portalGeo, portalMat)
-        mesh.position.set(x, skill.heightY, z)
-        mesh.userData = skill
-        helixGroup.add(mesh)
-        nodeMeshes.push(mesh)
-
-        // Clean Borderless 3D Logo Canvas Sprite
+        // Glassmorphic 3D Logo Canvas Badge
         const textCanvas = document.createElement('canvas')
-        textCanvas.width = 280
-        textCanvas.height = 60
+        textCanvas.width = 320
+        textCanvas.height = 76
         const ctx = textCanvas.getContext('2d')
         if (ctx) {
-          // Pure transparent background without square borders
+          // Draw dark glass rounded background badge
+          ctx.fillStyle = 'rgba(8, 14, 24, 0.92)'
+          ctx.strokeStyle = skill.colorHex
+          ctx.lineWidth = 2
+          ctx.beginPath()
+          ctx.roundRect(10, 10, 300, 56, 10)
+          ctx.fill()
+          ctx.stroke()
+
+          // Draw Logo Icon Symbol + Text Label
           ctx.fillStyle = skill.colorHex
           ctx.font = 'bold 22px DM Mono, monospace'
           ctx.textAlign = 'left'
           ctx.textBaseline = 'middle'
-          ctx.fillText(skill.iconSymbol, 10, 30)
+          ctx.fillText(skill.iconSymbol, 26, 38)
 
           ctx.fillStyle = '#ffffff'
           ctx.font = 'bold 19px DM Mono, monospace'
-          ctx.fillText(skill.name, 48, 30)
+          ctx.fillText(skill.name, 68, 38)
         }
+
         const textTexture = new THREE.CanvasTexture(textCanvas)
         const spriteMat = new THREE.SpriteMaterial({ map: textTexture, transparent: true })
         const sprite = new THREE.Sprite(spriteMat)
-        sprite.position.set(x, skill.heightY - 0.45, z)
-        sprite.scale.set(1.5, 0.38, 1)
+        sprite.position.set(x, skill.heightY, z)
+        sprite.scale.set(1.9, 0.46, 1)
+        sprite.userData = skill
         helixGroup.add(sprite)
+        spriteNodes.push(sprite)
 
         // Laser Conduit Beam to Pillar
         const points = [new THREE.Vector3(0, skill.heightY, 0), new THREE.Vector3(x, skill.heightY, z)]
@@ -199,24 +195,25 @@ export function SystemsScene() {
         helixGroup.rotation.y += (targetRotation.y - helixGroup.rotation.y) * 0.05
         helixGroup.rotation.x += (targetRotation.x - helixGroup.rotation.x) * 0.05
 
-        // Raycasting Logic
+        // Raycasting Logic directly on 3D Logo Sprites
         raycaster.setFromCamera(mouse, camera)
-        const intersects = raycaster.intersectObjects(nodeMeshes)
+        const intersects = raycaster.intersectObjects(spriteNodes)
 
         let hovered: SkillNode | null = null
 
-        nodeMeshes.forEach((mesh) => {
-          const skill = mesh.userData as SkillNode
-          const isHovered = intersects.length > 0 && intersects[0].object === mesh
+        spriteNodes.forEach((sprite) => {
+          const skill = sprite.userData as SkillNode
+          const isHovered = intersects.length > 0 && intersects[0].object === sprite
 
           if (isHovered) hovered = skill
 
           const activeName = (activeSkillRef.current as SkillNode)?.name || ''
           const isSelected = activeName === skill.name
 
-          const targetScale = isHovered || isSelected ? 1.55 : 1.0
-          mesh.scale.setScalar(mesh.scale.x + (targetScale - mesh.scale.x) * 0.1)
-          mesh.rotation.y += 0.03
+          const targetScaleX = isHovered || isSelected ? 2.3 : 1.9
+          const targetScaleY = isHovered || isSelected ? 0.56 : 0.46
+          sprite.scale.x += (targetScaleX - sprite.scale.x) * 0.1
+          sprite.scale.y += (targetScaleY - sprite.scale.y) * 0.1
         })
 
         if (hovered) {
