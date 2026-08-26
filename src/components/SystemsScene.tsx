@@ -92,7 +92,7 @@ export function SystemsScene() {
       const innerCore = new THREE.Mesh(innerCoreGeo, innerCoreMat)
       helixGroup.add(innerCore)
 
-      // 2. Build 3D Helix Portals & Logo Sprites
+      // 2. Build 3D Helix Portals & Borderless Logo Sprites
       const nodeMeshes: InstanceType<typeof THREE.Mesh>[] = []
       const radius = 2.8
 
@@ -116,35 +116,28 @@ export function SystemsScene() {
         helixGroup.add(mesh)
         nodeMeshes.push(mesh)
 
-        // Glassmorphic 3D Logo Canvas Badge
+        // Clean Borderless 3D Logo Canvas Sprite
         const textCanvas = document.createElement('canvas')
-        textCanvas.width = 320
-        textCanvas.height = 76
+        textCanvas.width = 280
+        textCanvas.height = 60
         const ctx = textCanvas.getContext('2d')
         if (ctx) {
-          ctx.fillStyle = 'rgba(8, 14, 24, 0.92)'
-          ctx.strokeStyle = skill.colorHex
-          ctx.lineWidth = 2
-          ctx.beginPath()
-          ctx.roundRect(10, 10, 300, 56, 10)
-          ctx.fill()
-          ctx.stroke()
-
+          // Pure transparent background without square borders
           ctx.fillStyle = skill.colorHex
           ctx.font = 'bold 22px DM Mono, monospace'
           ctx.textAlign = 'left'
           ctx.textBaseline = 'middle'
-          ctx.fillText(skill.iconSymbol, 26, 38)
+          ctx.fillText(skill.iconSymbol, 10, 30)
 
           ctx.fillStyle = '#ffffff'
           ctx.font = 'bold 19px DM Mono, monospace'
-          ctx.fillText(skill.name, 68, 38)
+          ctx.fillText(skill.name, 48, 30)
         }
         const textTexture = new THREE.CanvasTexture(textCanvas)
         const spriteMat = new THREE.SpriteMaterial({ map: textTexture, transparent: true })
         const sprite = new THREE.Sprite(spriteMat)
-        sprite.position.set(x, skill.heightY - 0.48, z)
-        sprite.scale.set(1.7, 0.42, 1)
+        sprite.position.set(x, skill.heightY - 0.45, z)
+        sprite.scale.set(1.5, 0.38, 1)
         helixGroup.add(sprite)
 
         // Laser Conduit Beam to Pillar
