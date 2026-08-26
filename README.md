@@ -1,9 +1,17 @@
 # Devarakonda Rakesh — 3D Interactive Portfolio
 
 > **Full Stack Developer | Backend Engineer**  
+> 🌐 **Live Demo**: [https://porfolio-six-teal.vercel.app/](https://porfolio-six-teal.vercel.app/)  
 > *Hyderabad, India* · [GitHub](https://github.com/RakeshDevarakonda) · [LinkedIn](https://linkedin.com/in/rakeshdevarakonda) · [Email](mailto:rakeshdevarakonda2000@gmail.com)
 
 A high-performance, interactive 3D portfolio website showcasing scalable backend architecture, real-time WebSocket pipelines, event-driven infrastructure, and published open-source npm tooling.
+
+---
+
+## 🚀 Live Preview
+
+Experience the live 3D portfolio in your browser:  
+👉 **[https://porfolio-six-teal.vercel.app/](https://porfolio-six-teal.vercel.app/)**
 
 ---
 
